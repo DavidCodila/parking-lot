@@ -2,21 +2,24 @@ import com.google.common.annotations.VisibleForTesting;
 
 public class Slot {
     private int number;
-    private boolean isTaken;
     private int distanceFromEntry;
+    private Car car;
 
     public Slot(int number, int distanceFromEntry) {
         this.number = number;
         this.distanceFromEntry = distanceFromEntry;
-        this.isTaken = false;
+        this.car = null;
     }
 
     @VisibleForTesting
     boolean isTaken() {
-        return isTaken;
+        return this.car != null;
     }
 
-    public void parkCar() {
-        this.isTaken = true;
+    public void parkCar(Car car) {
+        if (this.car == null) {
+            this.car = car;
+        }
+        //need to add pass to next slot somehow
     }
 }

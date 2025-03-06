@@ -6,7 +6,7 @@ public class SlotTest {
     @Test
     public void testParkUnParkCar() {
         Slot slot = new Slot(1,1);
-        slot.parkCar();
+        slot.parkCar(new Car());
         assertTrue(slot.isTaken());
     }
 }
