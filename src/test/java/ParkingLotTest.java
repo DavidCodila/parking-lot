@@ -30,6 +30,16 @@ public class ParkingLotTest {
     }
 
     @Test
+    public void testParkTooManyCars() {
+        for (int i = 0; i < MAX_CAPACITY; i++) {
+            this.parkingLot.parkCar(new Car(i));
+        }
+        var exception = assertThrows(RuntimeException.class,
+                () -> this.parkingLot.parkCar(new Car(MAX_CAPACITY)));
+        assertEquals("Can not park car, the parking lot is full", exception.getMessage());
+    }
+
+    @Test
     public void testTryToGetASlotRecordWithAIndexToLarge() {
         var exception = assertThrows(RuntimeException.class,
                 () -> this.parkingLot.getSlotAtIndex(MAX_CAPACITY));

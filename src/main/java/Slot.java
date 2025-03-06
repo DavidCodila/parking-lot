@@ -19,9 +19,11 @@ public class Slot implements Comparable<Slot> {
     public void parkCar(Car car) {
         if (this.car == null) {
             this.car = car;
-            return;
+        } else if (this.nextSlot == null) {
+            throw new RuntimeException("Can not park car, the parking lot is full");
+        } else {
+            this.nextSlot.parkCar(car);
         }
-        this.nextSlot.parkCar(car);
     }
 
     public void unParkCar() {
