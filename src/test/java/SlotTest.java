@@ -2,52 +2,46 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class SlotTest {
-    private Slot slot;
+    private Slot slot0;
+    private Slot slot1;
     private Car car;
 
     @BeforeEach
     public void setUp() {
-        this.slot = new Slot(1, 1);
-        this.slot.setNextSlot(new Slot(2, 2));
+        this.slot0 = new Slot(1, 1);
+        this.slot1 = new Slot(2, 2);
+        this.slot0.setNextSlot(this.slot1);
         this.car = new Car(0);
     }
 
     @Test
-    public void testParkParkCar() {
-        this.slot.parkCar(this.car);
-        assertEquals(this.car, this.slot.getCar());
-    }
-
-    @Test
-    public void testParkUnParkCar() {
-        this.slot.parkCar(this.car);
-        this.slot.unParkCar();
-        assertNull(this.slot.getCar());
+    public void testParkCar() {
+        this.slot0.parkCar(this.car);
+        assertEquals(this.car, this.slot0.getCar());
     }
 
     @Test
     public void testSendsCarToNextSlot() {
-        this.slot.parkCar(this.car);
-        Car car2 = new Car(1);
-        this.slot.parkCar(car2);
-        assertEquals(car2, this.slot.getNextSlot().getCar());
+        this.slot0.parkCar(this.car);
+        Car car1 = new Car(1);
+        this.slot0.parkCar(car1);
+        assertEquals(car1, this.slot1.getCar());
     }
 
     @Test
-    public void testSlotToSlotDistanceCompareToCloser() {
-        assertEquals(1, this.slot.compareTo(new Slot(2, 2)));
+    public void testCompareSlot0ToSlot1WithSlot0DistanceCloser() {
+        assertEquals(1, this.slot0.compareTo(new Slot(2, 2)));
     }
 
     @Test
-    public void testSlotToSlotDistanceCompareToEqual() {
-        assertEquals(0, this.slot.compareTo(new Slot(2, 1)));
+    public void testCompareSlot0ToSlot1WithDistanceEqual() {
+        assertEquals(0, this.slot0.compareTo(new Slot(2, 1)));
     }
 
     @Test
-    public void testSlotToSlotDistanceCompareToFurther() {
-        assertEquals(-1, this.slot.compareTo(new Slot(2, 0)));
+    public void testCompareSlot0ToSlot1WithSlot0DistanceFurther() {
+        assertEquals(-1, this.slot0.compareTo(new Slot(2, 0)));
     }
 }

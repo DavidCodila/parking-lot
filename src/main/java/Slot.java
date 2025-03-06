@@ -26,27 +26,18 @@ public class Slot implements Comparable<Slot> {
         }
     }
 
-    public void unParkCar() {
-        this.car = null;
-    }
-
     @Override
     public int compareTo(Slot otherSlot) {
         return -1*Integer.compare(this.distance, otherSlot.distance);
     }
 
     @VisibleForTesting
-    Car getCar() {
+    protected Car getCar() {
         return this.car;
     }
 
     @VisibleForTesting
-    Slot getNextSlot() {
-        return this.nextSlot;
-    }
-
-    @VisibleForTesting
-    int getNumber() {
+    protected int getNumber() {
         return number;
     }
 }
