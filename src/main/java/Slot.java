@@ -42,4 +42,9 @@ public class Slot implements Comparable<Slot> {
     Slot getNextSlot() {
         return this.nextSlot;
     }
+
+    @VisibleForTesting
+    int getNumber() {
+        return number;
+    }
 }

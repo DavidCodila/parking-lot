@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class SlotTest {
-    Slot slot;
-    Car car;
+    private Slot slot;
+    private Car car;
 
     @BeforeEach
     public void setUp() {
