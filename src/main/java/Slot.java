@@ -2,12 +2,10 @@ import com.google.common.annotations.VisibleForTesting;
 
 public class Slot {
     private int number;
-    private int distanceFromEntry;
     private Car car;
 
-    public Slot(int number, int distanceFromEntry) {
+    public Slot(int number) {
         this.number = number;
-        this.distanceFromEntry = distanceFromEntry;
         this.car = null;
     }
 
@@ -21,5 +19,9 @@ public class Slot {
             this.car = car;
         }
         //need to add pass to next slot somehow
+    }
+
+    public void unParkCar() {
+        this.car = null;
     }
 }
