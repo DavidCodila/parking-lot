@@ -39,4 +39,10 @@ public class SlotTest {
                 () -> this.slot2.parkCar(this.car2));
         assertEquals("Can not park car, the parking lot is full", exception.getMessage());
     }
+
+    @Test
+    public void testAssignSlotNumberToCar() {
+        this.slot1.parkCar(this.car1);
+        assertEquals(this.slot1.getNumber(), this.car1.getSlotNumber());
+    }
 }
