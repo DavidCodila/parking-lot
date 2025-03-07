@@ -1,6 +1,6 @@
 import com.google.common.annotations.VisibleForTesting;
 
-public class Slot implements Comparable<Slot> {
+public class Slot {
     private int number;
     private Car car;
     private final int distance;
@@ -26,18 +26,8 @@ public class Slot implements Comparable<Slot> {
         }
     }
 
-    @Override
-    public int compareTo(Slot otherSlot) {
-        return -1*Integer.compare(this.distance, otherSlot.distance);
-    }
-
     @VisibleForTesting
     protected Car getCar() {
         return this.car;
-    }
-
-    @VisibleForTesting
-    protected int getNumber() {
-        return number;
     }
 }
