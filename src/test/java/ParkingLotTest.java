@@ -10,47 +10,43 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ParkingLotTest {
     private int maxCapacity;
     private ParkingLot parkingLot;
-    private List<Car> cars;
+    private List<Integer> carIds;
 
     @BeforeEach
     public void setUp() {
         this.parkingLot = new ParkingLot();
         this.maxCapacity = this.parkingLot.MAX_CAPACITY;
-        this.cars = new ArrayList<>() {{
-            add(new Car(0));
-            add(new Car(1));
-            add(new Car(2));
-        } };
+        this.carIds = List.of(1, 2, 3);
     }
 
     @Test
     public void testParkCar() {
-        this.parkingLot.parkCar(this.cars.getFirst());
-        assertEquals(this.cars.getFirst(), this.parkingLot.getSlotAtIndex(0).getCar());
+        this.parkingLot.parkCar(this.carIds.getFirst());
+        assertEquals(this.carIds.getFirst(), this.parkingLot.getSlotAtIndex(0).getCar().getId());
     }
 
     @Test
-    public void testParkTwoCars() {
-        this.parkingLot.parkCar(this.cars.getFirst());
-        this.parkingLot.parkCar(this.cars.get(1));
-        assertEquals(this.cars.get(1), this.parkingLot.getSlotAtIndex(1).getCar());
+    public void testParkTwoCarIds() {
+        this.parkingLot.parkCar(this.carIds.getFirst());
+        this.parkingLot.parkCar(this.carIds.get(1));
+        assertEquals(this.carIds.get(1), this.parkingLot.getSlotAtIndex(1).getCar().getId());
     }
 
     @Test
-    public void testParkTooManyCars() {
+    public void testParkTooManyCarIds() {
         for (int i = 0; i < this.maxCapacity; i++) {
-            this.parkingLot.parkCar(new Car(i));
+            this.parkingLot.parkCar(i);
         }
         var exception = assertThrows(RuntimeException.class,
-                () -> this.parkingLot.parkCar(new Car(this.maxCapacity)));
+                () -> this.parkingLot.parkCar(this.maxCapacity));
         assertEquals("Can not park car, the parking lot is full", exception.getMessage());
     }
 
     @Test
     public void testWillParkInClosestSlot() {
-        this.parkingLot.getSlotAtIndex(0).parkCar(this.cars.getFirst());
-        this.parkingLot.getSlotAtIndex(1).parkCar(this.cars.get(1));
-        this.parkingLot.parkCar(this.cars.get(2));
-        assertEquals(this.cars.get(2), this.parkingLot.getSlotAtIndex(2).getCar());
+        this.parkingLot.getSlotAtIndex(0).parkCar(new Car(1));
+        this.parkingLot.getSlotAtIndex(1).parkCar(new Car(2));
+        this.parkingLot.parkCar(this.carIds.get(2));
+        assertEquals(this.carIds.get(2), this.parkingLot.getSlotAtIndex(2).getCar().getId());
     }
 }

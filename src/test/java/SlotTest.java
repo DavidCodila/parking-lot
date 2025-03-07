@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -44,5 +45,24 @@ public class SlotTest {
     public void testAssignSlotNumberToCar() {
         this.slot1.parkCar(this.car1);
         assertEquals(this.slot1.getNumber(), this.car1.getSlotNumber());
+    }
+
+    @Test
+    public void testFindCarThatIsPresent() throws Exception {
+        this.slot1.parkCar(this.car1);
+        String methodOutput = tapSystemOut(() -> {
+            this.slot1.getCar(this.car1.getId());
+        });
+        assertEquals("1 is parked at Slot number 1", methodOutput.trim());
+    }
+
+    @Test
+    public void testFindCarThatIsNotPresent() throws Exception {
+        this.slot1.parkCar(this.car2);
+        this.slot2.parkCar(this.car1);
+        String methodOutput = tapSystemOut(() -> {
+            this.slot1.getCar(this.car1.getId());
+        });
+        assertEquals("1 is parked at Slot number 2", methodOutput.trim());
     }
 }

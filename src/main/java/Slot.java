@@ -27,14 +27,22 @@ public class Slot {
         }
     }
 
+    public void getCar(int id) {
+        String output = this.car.printCarIdSlotId(id);
+        if (!output.isBlank()) {
+            System.out.println(output);
+        } else {
+            this.nextSlot.getCar(id);
+        }
+    }
+
     @VisibleForTesting
     public int getNumber() {
         return this.number;
     }
 
-
     @VisibleForTesting
-    protected Car getCar() {
+    Car getCar() {
         return this.car;
     }
 }

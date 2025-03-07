@@ -25,6 +25,12 @@
             <artifactId>guava</artifactId>
             <version>32.0.1-android</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.stefanbirkner</groupId>
+            <artifactId>system-lambda</artifactId>
+            <version>1.0.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
