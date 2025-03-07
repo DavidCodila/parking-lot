@@ -19,10 +19,10 @@ public class Slot {
     public void parkCar(Car car) {
         if (this.car == null) {
             this.car = car;
-        } else if (this.nextSlot == null) {
-            throw new RuntimeException("Can not park car, the parking lot is full");
-        } else {
+        } else if (this.nextSlot != null) {
             this.nextSlot.parkCar(car);
+        } else {
+            throw new RuntimeException("Can not park car, the parking lot is full");
         }
     }
 
