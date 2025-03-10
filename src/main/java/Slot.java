@@ -1,15 +1,14 @@
 import com.google.common.annotations.VisibleForTesting;
 
 public class Slot {
-    private int number;
-    private Car car;
+    private final int number;
     private final int distance;
-    private Slot nextSlot;
+    private Car car = null;
+    private Slot nextSlot = null;
 
     public Slot(int number, int distance) {
         this.number = number;
         this.distance = distance;
-        this.car = null;
     }
 
     public void setNextSlot(Slot slot) {
@@ -34,11 +33,6 @@ public class Slot {
         } else {
             this.nextSlot.getCar(id);
         }
-    }
-
-    @VisibleForTesting
-    public int getNumber() {
-        return this.number;
     }
 
     @VisibleForTesting

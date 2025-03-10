@@ -1,39 +1,39 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+
+//TODO: Make into integration test class then make another
+// class for ParkingLotTest with mocked dependencies
 public class ParkingLotTest {
     private int maxCapacity;
     private ParkingLot parkingLot;
-    private List<Integer> carIds;
+    private final int car1Id = 1;
 
     @BeforeEach
     public void setUp() {
         this.parkingLot = new ParkingLot();
-        this.maxCapacity = this.parkingLot.MAX_CAPACITY;
-        this.carIds = List.of(1, 2, 3);
+        this.maxCapacity = this.parkingLot.getMaxCapacity();
     }
 
     @Test
     public void testParkCar() {
-        this.parkingLot.parkCar(this.carIds.getFirst());
-        assertEquals(this.carIds.getFirst(), this.parkingLot.getSlotAtIndex(0).getCar().getId());
+        this.parkingLot.parkCar(this.car1Id);
+        assertEquals(this.car1Id, this.parkingLot.getSlotAtIndex(0).getCar().getId());
     }
 
     @Test
-    public void testParkTwoCarIds() {
-        this.parkingLot.parkCar(this.carIds.getFirst());
-        this.parkingLot.parkCar(this.carIds.get(1));
-        assertEquals(this.carIds.get(1), this.parkingLot.getSlotAtIndex(1).getCar().getId());
+    public void testParkTwoCars() {
+        int car2Id = 2;
+        this.parkingLot.parkCar(this.car1Id);
+        this.parkingLot.parkCar(car2Id);
+        assertEquals(car2Id, this.parkingLot.getSlotAtIndex(1).getCar().getId());
     }
 
     @Test
-    public void testParkTooManyCarIds() {
+    public void testParkTooManyCars() {
         for (int i = 0; i < this.maxCapacity; i++) {
             this.parkingLot.parkCar(i);
         }
@@ -44,9 +44,10 @@ public class ParkingLotTest {
 
     @Test
     public void testWillParkInClosestSlot() {
+        int car3Id = 3;
         this.parkingLot.getSlotAtIndex(0).parkCar(new Car(1));
         this.parkingLot.getSlotAtIndex(1).parkCar(new Car(2));
-        this.parkingLot.parkCar(this.carIds.get(2));
-        assertEquals(this.carIds.get(2), this.parkingLot.getSlotAtIndex(2).getCar().getId());
+        this.parkingLot.parkCar(car3Id);
+        assertEquals(car3Id, this.parkingLot.getSlotAtIndex(2).getCar().getId());
     }
 }

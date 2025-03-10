@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParkingLot {
-    @VisibleForTesting
-    final int MAX_CAPACITY = 5;
+    private final int MAX_CAPACITY = 5;
     private final List<Slot> slotRecord = new ArrayList<>(this.MAX_CAPACITY);
 
     public ParkingLot() {
@@ -21,8 +20,17 @@ public class ParkingLot {
         this.slotRecord.getFirst().parkCar(new Car(id));
     }
 
+    public void findCar(int id) {
+        this.slotRecord.getFirst().getCar(id);
+    }
+
+    @VisibleForTesting
+    int getMaxCapacity() {
+        return this.MAX_CAPACITY;
+    }
+
     @VisibleForTesting
     Slot getSlotAtIndex(int i) throws IndexOutOfBoundsException {
-        return slotRecord.get(i);
+        return this.slotRecord.get(i);
     }
 }

@@ -5,19 +5,26 @@ import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+//TODO: Mocked Car dependencies
 public class SlotTest {
     private Slot slot1;
     private Slot slot2;
     private Car car1;
     private Car car2;
 
+    private final int slot1Id = 1;
+    private final int slot2Id = 2;
+    private final int car1Id = 1;
+    private final int car2Id = 2;
+
+
     @BeforeEach
     public void setUp() {
-        this.slot1 = new Slot(1, 1);
-        this.slot2 = new Slot(2, 2);
+        this.slot1 = new Slot(this.slot1Id, 1);
+        this.slot2 = new Slot(this.slot2Id, 2);
         this.slot1.setNextSlot(this.slot2);
-        this.car1 = new Car(1);
-        this.car2 = new Car(2);
+        this.car1 = new Car(this.car1Id);
+        this.car2 = new Car(this.car2Id);
     }
 
     @Test
@@ -44,25 +51,21 @@ public class SlotTest {
     @Test
     public void testAssignSlotNumberToCar() {
         this.slot1.parkCar(this.car1);
-        assertEquals(this.slot1.getNumber(), this.car1.getSlotNumber());
+        assertEquals(this.slot1Id, this.car1.getSlotNumber());
     }
 
     @Test
     public void testFindCarThatIsPresent() throws Exception {
         this.slot1.parkCar(this.car1);
-        String methodOutput = tapSystemOut(() -> {
-            this.slot1.getCar(this.car1.getId());
-        });
-        assertEquals("1 is parked at Slot number 1", methodOutput.trim());
+        String methodOutput = tapSystemOut(() -> this.slot1.getCar(this.car1.getId()));
+        assertEquals(this.car1Id + " is parked at Slot number " + this.slot1Id, methodOutput.trim());
     }
 
     @Test
     public void testFindCarThatIsNotPresent() throws Exception {
         this.slot1.parkCar(this.car2);
         this.slot2.parkCar(this.car1);
-        String methodOutput = tapSystemOut(() -> {
-            this.slot1.getCar(this.car1.getId());
-        });
-        assertEquals("1 is parked at Slot number 2", methodOutput.trim());
+        String methodOutput = tapSystemOut(() -> this.slot1.getCar(this.car1Id));
+        assertEquals(this.car1Id + " is parked at Slot number "+ this.slot2Id, methodOutput.trim());
     }
 }
