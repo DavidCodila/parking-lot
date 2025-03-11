@@ -2,8 +2,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ParkingLotTest {
     private ParkingLot parkingLot;
@@ -11,6 +10,7 @@ public class ParkingLotTest {
     private static final int MAX_CAPACITY = 5;
     private final int car1Id = 1;
     private final int car2Id = 2;
+    private final int notPresentId = -1;
 
     @BeforeEach
     public void setUp() {
@@ -61,11 +61,10 @@ public class ParkingLotTest {
 
     @Test
     public void testCanNotFindCar() {
-        int notPresentId = this.car1Id + 1;
         var exception = assertThrows(RuntimeException.class,
-                () -> this.parkingLot.findCar(notPresentId)
+                () -> this.parkingLot.findCar(this.notPresentId)
         );
-        assertEquals("Car with id: " + notPresentId + " could not be found", exception.getMessage());
+        assertEquals("Car with id: " + this.notPresentId + " could not be found", exception.getMessage());
     }
 
     @Test
@@ -84,5 +83,49 @@ public class ParkingLotTest {
     public void testPrintWithNoCarsInParkingLot() throws Exception {
         String methodOutput = tapSystemOut(() -> this.parkingLot.print()).trim();
         assertEquals("No cars in the Parking Lot", methodOutput);
+    }
+
+    @Test
+    public void testUnParkCar() throws Exception {
+        this.parkingLot.parkCar(this.car1Id);
+        String methodOutput = tapSystemOut(() -> this.parkingLot.unParkCar(this.car1Id)).trim();
+        assertEquals("Slot " + this.parkingLot.getSlotAtIndex(0).getNumber() + " is free", methodOutput);
+        assertNull(this.parkingLot.getSlotAtIndex(0).getCar());
+    }
+
+    @Test
+    public void testUnParkSecondCarInParkingLot() throws Exception {
+        this.parkingLot.parkCar(this.car1Id);
+        this.parkingLot.parkCar(this.car2Id);
+        String methodOutput = tapSystemOut(() -> this.parkingLot.unParkCar(this.car2Id)).trim();
+        assertEquals("Slot " + this.parkingLot.getSlotAtIndex(1).getNumber() + " is free", methodOutput);
+        assertNull(this.parkingLot.getSlotAtIndex(1).getCar());
+    }
+
+    @Test
+    public void testUnParkManyCars() throws Exception {
+        this.parkingLot.parkCar(this.car1Id);
+        this.parkingLot.parkCar(this.car2Id);
+
+        String methodOutput = tapSystemOut(() -> this.parkingLot.unParkCar(this.car2Id)).trim();
+        assertEquals("Slot " + this.parkingLot.getSlotAtIndex(1).getNumber() + " is free", methodOutput);
+        assertNull(this.parkingLot.getSlotAtIndex(1).getCar());
+
+        String SecondMethodOutput = tapSystemOut(() -> this.parkingLot.unParkCar(this.car1Id)).trim();
+        assertEquals("Slot " + this.parkingLot.getSlotAtIndex(0).getNumber() + " is free", SecondMethodOutput);
+        assertNull(this.parkingLot.getSlotAtIndex(0).getCar());
+    }
+
+    @Test
+    public void TestUnParkACarThatIsNotInTheParkingLot() {
+        var exception = assertThrows(RuntimeException.class, () -> this.parkingLot.unParkCar(-1));
+        assertEquals("Can not un-park car with id: " + this.notPresentId, exception.getMessage());
+    }
+
+    @Test
+    public void TestUnParkACarThatIsInParkingLotButNotInASlot() {
+        this.parkingLot.addCarToRecord(car1Id, new Car(this.car1Id));
+        var exception = assertThrows(RuntimeException.class, () -> this.parkingLot.unParkCar(this.car1Id));
+        assertEquals("That car does not has a slot", exception.getMessage());
     }
 }

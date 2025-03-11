@@ -44,8 +44,21 @@ public class ParkingLot {
         }
     }
 
+    public void unParkCar(int id) {
+        Car carToUnPark = this.carRecord.get(id);
+        if (carToUnPark == null) {
+            throw new RuntimeException("Can not un-park car with id: " + id);
+        }
+        this.slotRecord.getFirst().unParkCar(carToUnPark);
+    }
+
     @VisibleForTesting
     Slot getSlotAtIndex(int i) throws IndexOutOfBoundsException {
         return this.slotRecord.get(i);
+    }
+
+    @VisibleForTesting
+    void addCarToRecord(int index, Car car) {
+        this.carRecord.put(index, car);
     }
 }

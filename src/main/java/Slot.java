@@ -26,6 +26,17 @@ public class Slot {
         }
     }
 
+    public void unParkCar(Car car) {
+        if (this.car == car) {
+            this.car = null;
+            System.out.printf("Slot %d is free\n", this.number);
+        } else if (this.nextSlot != null) {
+            this.nextSlot.unParkCar(car);
+        } else {
+            throw new RuntimeException("That car does not has a slot");
+        }
+    }
+
     @VisibleForTesting
     public int getNumber() {
         return this.number;
