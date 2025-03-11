@@ -21,9 +21,9 @@ public class CarTest {
     }
 
     @Test
-    public void testPrintFindCarResult() throws Exception {
+    public void testPrintInformation() throws Exception {
         this.car.parkInSlot(this.slotId);
-        String methodOutput = tapSystemOut(() -> this.car.printFindCarResult()).trim();
+        String methodOutput = tapSystemOut(() -> this.car.printInformation()).trim();
         assertEquals(this.carId + " is parked at Slot number " + this.slotId, methodOutput);
     }
 }

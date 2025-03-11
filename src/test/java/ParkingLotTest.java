@@ -10,6 +10,7 @@ public class ParkingLotTest {
 
     private static final int MAX_CAPACITY = 5;
     private final int car1Id = 1;
+    private final int car2Id = 2;
 
     @BeforeEach
     public void setUp() {
@@ -24,10 +25,9 @@ public class ParkingLotTest {
 
     @Test
     public void testParkTwoCars() {
-        int car2Id = 2;
         this.parkingLot.parkCar(this.car1Id);
-        this.parkingLot.parkCar(car2Id);
-        assertEquals(car2Id, this.parkingLot.getSlotAtIndex(1).getCar().getId());
+        this.parkingLot.parkCar(this.car2Id);
+        assertEquals(this.car2Id, this.parkingLot.getSlotAtIndex(1).getCar().getId());
     }
 
     @Test
@@ -52,7 +52,6 @@ public class ParkingLotTest {
     @Test
     public void testFindCar() throws Exception {
         this.parkingLot.parkCar(this.car1Id);
-        this.parkingLot.findCar(this.car1Id);
         String methodOutput = tapSystemOut(() -> this.parkingLot.findCar(this.car1Id)).trim();
         assertEquals(
                 this.car1Id + " is parked at Slot number " + this.parkingLot.getSlotAtIndex(0).getNumber(),
@@ -67,6 +66,23 @@ public class ParkingLotTest {
                 () -> this.parkingLot.findCar(notPresentId)
         );
         assertEquals("Car with id: " + notPresentId + " could not be found", exception.getMessage());
+    }
 
+    @Test
+    public void testPrint() throws Exception {
+        this.parkingLot.parkCar(this.car1Id);
+        this.parkingLot.parkCar(this.car2Id);
+        String methodOutput = tapSystemOut(() -> this.parkingLot.print()).trim();
+        assertEquals(
+                this.car1Id + " is parked at Slot number " + this.parkingLot.getSlotAtIndex(0).getNumber()
+                + "\n" + this.car2Id + " is parked at Slot number " + this.parkingLot.getSlotAtIndex(1).getNumber(),
+                methodOutput
+        );
+    }
+
+    @Test
+    public void testPrintWithNoCarsInParkingLot() throws Exception {
+        String methodOutput = tapSystemOut(() -> this.parkingLot.print()).trim();
+        assertEquals("No cars in the Parking Lot", methodOutput);
     }
 }

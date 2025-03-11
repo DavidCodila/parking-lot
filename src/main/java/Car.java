@@ -13,7 +13,7 @@ public class Car {
         System.out.printf("SLOT %d is allocated to %d\n", this.slotNumber, this.id);
     }
 
-    public void printFindCarResult() {
+    public void printInformation() {
         System.out.printf("%d is parked at Slot number %d\n", this.id, this.slotNumber);
     }
 

@@ -30,7 +30,18 @@ public class ParkingLot {
         if (car == null) {
             throw new RuntimeException("Car with id: " + id + " could not be found");
         }
-        car.printFindCarResult();
+        car.printInformation();
+    }
+
+    //Need to find out what [PATTERN] is
+    public void print() {
+        if (this.carRecord.isEmpty()) {
+            System.out.println("No cars in the Parking Lot");
+        } else {
+            for(Car car : this.carRecord.values()) {
+                car.printInformation();
+            }
+        }
     }
 
     @VisibleForTesting
