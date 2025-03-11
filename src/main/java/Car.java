@@ -13,19 +13,12 @@ public class Car {
         System.out.printf("SLOT %d is allocated to %d\n", this.slotNumber, this.id);
     }
 
-    public String printCarIdSlotId(int id) {
-        return (this.id == id)
-                ? this.id + " is parked at Slot number " + this.slotNumber
-                : "";
+    public void printFindCarResult() {
+        System.out.printf("%d is parked at Slot number %d\n", this.id, this.slotNumber);
     }
 
     @VisibleForTesting
     int getId() {
         return this.id;
-    }
-
-    @VisibleForTesting
-    int getSlotNumber() {
-        return this.slotNumber;
     }
 }

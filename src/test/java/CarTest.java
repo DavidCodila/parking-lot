@@ -16,21 +16,14 @@ public class CarTest {
 
     @Test
     public void testParkInSlot() throws Exception {
-        String methodOutput = tapSystemOut(() -> this.car.parkInSlot(this.slotId));
-        assertEquals("SLOT " + this.slotId + " is allocated to " + this.carId, methodOutput.trim());
+        String methodOutput = tapSystemOut(() -> this.car.parkInSlot(this.slotId)).trim();
+        assertEquals("SLOT " + this.slotId + " is allocated to " + this.carId, methodOutput);
     }
 
     @Test
-    public void testPrintCarIdSlotId() {
+    public void testPrintFindCarResult() throws Exception {
         this.car.parkInSlot(this.slotId);
-        assertEquals(this.carId + " is parked at Slot number " + this.slotId,
-                this.car.printCarIdSlotId(this.carId)
-        );
-    }
-
-    @Test
-    public void testPrintCarIdSlotIdIfIncorrectIdIsPassed() {
-        this.car.parkInSlot(this.slotId);
-        assertEquals("", this.car.printCarIdSlotId(this.slotId + 1));
+        String methodOutput = tapSystemOut(() -> this.car.printFindCarResult()).trim();
+        assertEquals(this.carId + " is parked at Slot number " + this.slotId, methodOutput);
     }
 }

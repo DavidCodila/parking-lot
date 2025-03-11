@@ -1,18 +1,19 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ParkingLotTest {
-    private int maxCapacity;
     private ParkingLot parkingLot;
+
+    private static final int MAX_CAPACITY = 5;
     private final int car1Id = 1;
 
     @BeforeEach
     public void setUp() {
-        this.parkingLot = new ParkingLot();
-        this.maxCapacity = this.parkingLot.getMaxCapacity();
+        this.parkingLot = new ParkingLot(MAX_CAPACITY);
     }
 
     @Test
@@ -31,11 +32,11 @@ public class ParkingLotTest {
 
     @Test
     public void testParkTooManyCars() {
-        for (int i = 0; i < this.maxCapacity; i++) {
+        for (int i = 0; i < MAX_CAPACITY; i++) {
             this.parkingLot.parkCar(i);
         }
         var exception = assertThrows(RuntimeException.class,
-                () -> this.parkingLot.parkCar(this.maxCapacity));
+                () -> this.parkingLot.parkCar(MAX_CAPACITY));
         assertEquals("Can not park car, the parking lot is full", exception.getMessage());
     }
 
@@ -46,5 +47,26 @@ public class ParkingLotTest {
         this.parkingLot.getSlotAtIndex(1).parkCar(new Car(2));
         this.parkingLot.parkCar(car3Id);
         assertEquals(car3Id, this.parkingLot.getSlotAtIndex(2).getCar().getId());
+    }
+
+    @Test
+    public void testFindCar() throws Exception {
+        this.parkingLot.parkCar(this.car1Id);
+        this.parkingLot.findCar(this.car1Id);
+        String methodOutput = tapSystemOut(() -> this.parkingLot.findCar(this.car1Id)).trim();
+        assertEquals(
+                this.car1Id + " is parked at Slot number " + this.parkingLot.getSlotAtIndex(0).getNumber(),
+                methodOutput
+        );
+    }
+
+    @Test
+    public void testCanNotFindCar() {
+        int notPresentId = this.car1Id + 1;
+        var exception = assertThrows(RuntimeException.class,
+                () -> this.parkingLot.findCar(notPresentId)
+        );
+        assertEquals("Car with id: " + notPresentId + " could not be found", exception.getMessage());
+
     }
 }

@@ -1,14 +1,17 @@
 import com.google.common.annotations.VisibleForTesting;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ParkingLot {
-    private final int MAX_CAPACITY = 5;
-    private final List<Slot> slotRecord = new ArrayList<>(this.MAX_CAPACITY);
+    private final List<Slot> slotRecord = new ArrayList<>();
+    private final Map<Integer, Car> carRecord = new HashMap<>();
 
-    public ParkingLot() {
-        for (int i = 0; i < this.MAX_CAPACITY; i++) {
+    //need to think about altering distance assignment
+    public ParkingLot(int maxCapacity) {
+        for (int i = 0; i < maxCapacity; i++) {
             this.slotRecord.add(new Slot(i, i+1));
             if(i > 0) {
                 this.slotRecord.get(i - 1).setNextSlot(this.slotRecord.get(i));
@@ -17,14 +20,17 @@ public class ParkingLot {
     }
 
     public void parkCar(int id) {
-        this.slotRecord.getFirst().parkCar(new Car(id));
+        Car car = new Car(id);
+        this.slotRecord.getFirst().parkCar(car);
+        this.carRecord.put(id, car);
     }
 
-    public void findCar(int id) {}
-
-    @VisibleForTesting
-    int getMaxCapacity() {
-        return this.MAX_CAPACITY;
+    public void findCar(int id) {
+        Car car = this.carRecord.get(id);
+        if (car == null) {
+            throw new RuntimeException("Car with id: " + id + " could not be found");
+        }
+        car.printFindCarResult();
     }
 
     @VisibleForTesting
