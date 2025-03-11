@@ -1,71 +1,79 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
-//TODO: Mocked Car dependencies
+@ExtendWith(MockitoExtension.class)
 public class SlotTest {
-    private Slot slot1;
+    private Slot slot;
     private Slot slot2;
-    private Car car1;
-    private Car car2;
 
-    private final int slot1Id = 1;
+    @Mock private Car car;
+    @Mock private Car car2;
+
+    private final int slotId = 1;
     private final int slot2Id = 2;
-    private final int car1Id = 1;
+    private final int carId = 1;
     private final int car2Id = 2;
-
 
     @BeforeEach
     public void setUp() {
-        this.slot1 = new Slot(this.slot1Id, 1);
+        this.slot = new Slot(this.slotId, 1);
         this.slot2 = new Slot(this.slot2Id, 2);
-        this.slot1.setNextSlot(this.slot2);
-        this.car1 = new Car(this.car1Id);
-        this.car2 = new Car(this.car2Id);
+        this.slot.setNextSlot(this.slot2);
+        this.slot.parkCar(this.car);
     }
 
     @Test
     public void testParkCar() {
-        this.slot1.parkCar(this.car1);
-        assertEquals(this.car1, this.slot1.getCar());
+        assertEquals(this.car, this.slot.getCar());
     }
 
     @Test
     public void testSendsCarToNextSlot() {
-        this.slot1.parkCar(this.car1);
-        this.slot1.parkCar(this.car2);
+        this.slot.parkCar(this.car2);
         assertEquals(this.car2, this.slot2.getCar());
     }
 
     @Test
     public void testFinalSlotThrowsParkingLotIsFullException() {
-        this.slot2.parkCar(this.car1);
+        this.slot.setNextSlot(null);
         var exception = assertThrows(RuntimeException.class,
-                () -> this.slot2.parkCar(this.car2));
+                () -> this.slot.parkCar(this.car2));
         assertEquals("Can not park car, the parking lot is full", exception.getMessage());
     }
 
     @Test
     public void testAssignSlotNumberToCar() {
-        this.slot1.parkCar(this.car1);
-        assertEquals(this.slot1Id, this.car1.getSlotNumber());
+        when(this.car.getSlotNumber()).thenReturn(this.slotId);
+        assertEquals(this.slotId, this.car.getSlotNumber());
     }
 
     @Test
-    public void testFindCarThatIsPresent() throws Exception {
-        this.slot1.parkCar(this.car1);
-        String methodOutput = tapSystemOut(() -> this.slot1.getCar(this.car1.getId()));
-        assertEquals(this.car1Id + " is parked at Slot number " + this.slot1Id, methodOutput.trim());
+    public void testFindCarThatIsPresentInFirstSlot() throws Exception {
+        String expectedOutput = this.carId + " is parked at Slot number " + this.slotId;
+        when(this.car.printCarIdSlotId(any(int.class)))
+                .thenReturn(expectedOutput);
+        String methodOutput = tapSystemOut(() -> this.slot.getCar(this.carId));
+        assertEquals(expectedOutput, methodOutput.trim());
     }
 
     @Test
-    public void testFindCarThatIsNotPresent() throws Exception {
-        this.slot1.parkCar(this.car2);
-        this.slot2.parkCar(this.car1);
-        String methodOutput = tapSystemOut(() -> this.slot1.getCar(this.car1Id));
-        assertEquals(this.car1Id + " is parked at Slot number "+ this.slot2Id, methodOutput.trim());
+    public void testFindCarThatIsNotPresentInFirstSlot() throws Exception {
+        String expectedOutput = this.carId + " is parked at Slot number "+ this.slot2Id;
+        this.slot2.parkCar(this.car2);
+        when(this.car.printCarIdSlotId(any(int.class)))
+                .thenReturn("");
+        when(this.car2.printCarIdSlotId(any(int.class)))
+                .thenReturn(expectedOutput);
+        String methodOutput = tapSystemOut(() -> this.slot.getCar(this.car2Id));
+        assertEquals(expectedOutput, methodOutput.trim());
     }
 }

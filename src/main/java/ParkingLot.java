@@ -20,9 +20,7 @@ public class ParkingLot {
         this.slotRecord.getFirst().parkCar(new Car(id));
     }
 
-    public void findCar(int id) {
-        this.slotRecord.getFirst().getCar(id);
-    }
+    public void findCar(int id) {}
 
     @VisibleForTesting
     int getMaxCapacity() {

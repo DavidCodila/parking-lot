@@ -4,9 +4,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
-//TODO: Make into integration test class then make another
-// class for ParkingLotTest with mocked dependencies
 public class ParkingLotTest {
     private int maxCapacity;
     private ParkingLot parkingLot;
