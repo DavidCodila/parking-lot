@@ -14,10 +14,13 @@ public class ParkingLot {
     }
 
     public void parkCar(int id) {
-        //need to add maxCapacity check here
-        Car car = new Car(id);
-        this.slotRecord.addCar(car);
-        this.carRecord.put(id, car);
+        if (this.carRecord.size() < this.MAX_CAPACITY) {
+            Car car = new Car(id);
+            this.slotRecord.addCar(car);
+            this.carRecord.put(id, car);
+        } else {
+            throw new RuntimeException("Can not park car, parking lot is full");
+        }
     }
 
     public void findCar(int id) {

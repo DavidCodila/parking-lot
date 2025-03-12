@@ -35,6 +35,17 @@ public class ParkingLotTest {
     }
 
     @Test
+    public void testParkToManyCars() {
+        doNothing().when(this.slotRecord).addCar(any(Car.class));
+        for (int i = 0; i < MAX_CAPACITY; i++) {
+            this.parkingLot.parkCar(i);
+        }
+        var exception = assertThrows(RuntimeException.class,
+                () -> this.parkingLot.parkCar(MAX_CAPACITY));
+        assertEquals("Can not park car, parking lot is full", exception.getMessage());
+    }
+
+    @Test
     public void testFindCar() {
         this.parkingLot.addCarToCarRecord(CAR_1_ID, this.car);
         this.parkingLot.findCar(CAR_1_ID);
