@@ -48,12 +48,12 @@ public class ParkingLot {
     }
 
     @VisibleForTesting
-    Car getCarById(int id) {
-        return this.carRecord.get(id);
+    void addCarToCarRecord(int id, Car car) {
+        this.carRecord.put(id, car);
     }
 
     @VisibleForTesting
-    void addCarToCarRecord(int id, Car car) {
-        this.carRecord.put(id, car);
+    Car getCarFromCarRecordById(Integer id) {
+        return this.carRecord.get(id);
     }
 }
