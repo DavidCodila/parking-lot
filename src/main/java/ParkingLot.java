@@ -40,15 +40,20 @@ public class ParkingLot {
     }
 
     public void unParkCar(int id) {
-        Car carToUnPark = this.carRecord.get(id);
-        if (carToUnPark == null) {
+        Car car = this.carRecord.get(id);
+        if (car == null) {
             throw new RuntimeException("Can not un-park car with id: " + id);
         }
-        this.slotRecord.removeCar(carToUnPark);
+        car.unPark();
     }
 
     @VisibleForTesting
     Car getCarById(int id) {
         return this.carRecord.get(id);
+    }
+
+    @VisibleForTesting
+    void addCarToCarRecord(int id, Car car) {
+        this.carRecord.put(id, car);
     }
 }

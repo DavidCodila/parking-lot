@@ -1,6 +1,6 @@
 import com.google.common.annotations.VisibleForTesting;
 
-public class Slot {
+public class Slot implements Observer {
     private final int number;
     private final int distance;
     private Car car = null;
@@ -19,6 +19,7 @@ public class Slot {
         if (this.car == null) {
             this.car = car;
             this.car.parkInSlot(this.number);
+            this.car.setObserver(this);
         } else if (this.nextSlot != null) {
             this.nextSlot.parkCar(car);
         } else {
@@ -26,15 +27,10 @@ public class Slot {
         }
     }
 
-    public void unParkCar(Car car) {
-        if (this.car == car) {
-            this.car = null;
-            System.out.printf("Slot %d is free\n", this.number);
-        } else if (this.nextSlot != null) {
-            this.nextSlot.unParkCar(car);
-        } else {
-            throw new RuntimeException("That car does not has a slot");
-        }
+    @Override
+    public void unParkCar() {
+        this.car = null;
+        System.out.printf("Slot %d is free\n", this.number);
     }
 
     @VisibleForTesting

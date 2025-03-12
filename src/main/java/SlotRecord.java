@@ -20,10 +20,6 @@ public class SlotRecord {
         this.slots.getFirst().parkCar(car);
     }
 
-    public void removeCar(Car carToUnPark) {
-        this.slots.getFirst().unParkCar(carToUnPark);
-    }
-
     @VisibleForTesting
     Car getCarAtIndex(int i) throws IndexOutOfBoundsException {
         return this.slots.get(i).getCar();

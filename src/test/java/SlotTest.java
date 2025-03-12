@@ -47,24 +47,8 @@ public class SlotTest {
 
     @Test
     public void testUnParkCar() throws Exception {
-        String methodOutput = tapSystemOut(() -> this.slot.unParkCar(this.car)).trim();
+        String methodOutput = tapSystemOut(() -> this.slot.unParkCar()).trim();
         assertEquals("Slot " + SLOT_NUMBER + " is free", methodOutput);
         assertNull(this.slot.getCar());
-    }
-
-    @Test
-    public void testSendsUnParkCommandToNextSlot() {
-        doNothing().when(this.slot2).unParkCar(any(Car.class));
-        this.slot.unParkCar(this.car2);
-        verify(this.slot2, times(1)).unParkCar(any(Car.class));
-    }
-
-    @Test
-    public void testUnParkCarWithACarThatDoesNotHaveASlot() {
-        this.slot.unParkCar(this.car);
-        this.slot.setNextSlot(null);
-        var exception = assertThrows(RuntimeException.class,
-                () -> this.slot.unParkCar(this.car));
-        assertEquals("That car does not has a slot", exception.getMessage());
     }
 }

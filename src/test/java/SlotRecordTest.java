@@ -2,8 +2,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SlotRecordTest {
     private static final int MAX_CAPACITY = 5;
@@ -56,29 +56,5 @@ public class SlotRecordTest {
         this.slotRecord.addCar(this.car2);
         this.slotRecord.addCar(car3);
         assertEquals(car3, this.slotRecord.getCarAtIndex(SECOND_INDEX));
-    }
-
-    @Test
-    public void testUnParkCar() {
-        this.slotRecord.removeCar(this.car1);
-        assertNull(this.slotRecord.getCarAtIndex(ZER0TH_INDEX));
-    }
-
-    @Test
-    public void testUnParkSecondCarInParkingLot() {
-        this.slotRecord.addCar(this.car2);
-        this.slotRecord.removeCar(this.car2);
-        assertNull(this.slotRecord.getCarAtIndex(FIRST_INDEX));
-    }
-
-    @Test
-    public void testUnParkManyCars() {
-        this.slotRecord.addCar(this.car2);
-
-        this.slotRecord.removeCar(this.car1);
-        this.slotRecord.removeCar(this.car2);
-
-        assertNull(this.slotRecord.getCarAtIndex(ZER0TH_INDEX));
-        assertNull(this.slotRecord.getCarAtIndex(FIRST_INDEX));
     }
 }

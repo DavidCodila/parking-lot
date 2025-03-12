@@ -5,8 +5,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -64,11 +64,13 @@ public class ParkingLotTest {
 
     @Test
     public void testUnParkCar() {
-        this.parkingLot.parkCar(car1Id);
-        this.parkingLot.getCarById(car1Id).parkInSlot(SLOT_NUMBER_FOR_SLOT_0);
-        doNothing().when(this.slotRecord).removeCar(any(Car.class));
+        Car car = mock(Car.class);
+        doNothing().when(car).unPark();
+
+        this.parkingLot.addCarToCarRecord(car1Id, car);
         this.parkingLot.unParkCar(car1Id);
-        verify(this.slotRecord, times(1)).removeCar(any(Car.class));
+
+        verify(car, times(1)).unPark();
     }
 
     @Test
