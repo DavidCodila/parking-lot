@@ -1,5 +1,3 @@
-import com.google.common.annotations.VisibleForTesting;
-
 public class Car {
     private final int id;
     private int slotNumber;
@@ -15,10 +13,5 @@ public class Car {
 
     public void printInformation() {
         System.out.printf("%d is parked at Slot number %d\n", this.id, this.slotNumber);
-    }
-
-    @VisibleForTesting
-    int getId() {
-        return this.id;
     }
 }

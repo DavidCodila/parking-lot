@@ -6,7 +6,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class SlotTest {
@@ -44,5 +43,12 @@ public class SlotTest {
         var exception = assertThrows(RuntimeException.class,
                 () -> this.slot.parkCar(this.car2));
         assertEquals("Can not park car, the parking lot is full", exception.getMessage());
+    }
+
+    @Test
+    public void testUnParkCarWithACarThatDoesNotHaveASlot() {
+        var exception = assertThrows(RuntimeException.class,
+                () -> this.slot.unParkCar(this.car2));
+        assertEquals("That car does not has a slot", exception.getMessage());
     }
 }

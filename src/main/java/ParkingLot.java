@@ -1,27 +1,22 @@
 import com.google.common.annotations.VisibleForTesting;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ParkingLot {
-    private final List<Slot> slotRecord = new ArrayList<>();
+    private final int MAX_CAPACITY;
     private final Map<Integer, Car> carRecord = new HashMap<>();
+    private final SlotRecord slotRecord;
 
-    //need to think about altering distance assignment
-    public ParkingLot(int maxCapacity) {
-        for (int i = 0; i < maxCapacity; i++) {
-            this.slotRecord.add(new Slot(i, i+1));
-            if(i > 0) {
-                this.slotRecord.get(i - 1).setNextSlot(this.slotRecord.get(i));
-            }
-        }
+    public ParkingLot(int maxCapacity, SlotRecord slotRecord) {
+        this.MAX_CAPACITY = maxCapacity;
+        this.slotRecord = slotRecord;
     }
 
     public void parkCar(int id) {
+        //need to add maxCapacity check here
         Car car = new Car(id);
-        this.slotRecord.getFirst().parkCar(car);
+        this.slotRecord.addCar(car);
         this.carRecord.put(id, car);
     }
 
@@ -49,16 +44,11 @@ public class ParkingLot {
         if (carToUnPark == null) {
             throw new RuntimeException("Can not un-park car with id: " + id);
         }
-        this.slotRecord.getFirst().unParkCar(carToUnPark);
+        this.slotRecord.removeCar(carToUnPark);
     }
 
     @VisibleForTesting
-    Slot getSlotAtIndex(int i) throws IndexOutOfBoundsException {
-        return this.slotRecord.get(i);
-    }
-
-    @VisibleForTesting
-    void addCarToRecord(int index, Car car) {
-        this.carRecord.put(index, car);
+    Car getCarById(int id) {
+        return this.carRecord.get(id);
     }
 }

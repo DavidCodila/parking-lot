@@ -1,80 +1,57 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class ParkingLotTest {
+    private static final int MAX_CAPACITY = 5;
+    private static final int SLOT_NUMBER_FOR_SLOT_0 = 0;
+    private static final int SLOT_NUMBER_FOR_SLOT_1 = 1;
+    private static final int car1Id = 1;
+    private static final int carNotPresentId = -1;
+    
     private ParkingLot parkingLot;
 
-    private static final int MAX_CAPACITY = 5;
-    private final int car1Id = 1;
-    private final int car2Id = 2;
-    private final int notPresentId = -1;
+    @Mock
+    private SlotRecord slotRecord;
 
     @BeforeEach
     public void setUp() {
-        this.parkingLot = new ParkingLot(MAX_CAPACITY);
-    }
-
-    @Test
-    public void testParkCar() {
-        this.parkingLot.parkCar(this.car1Id);
-        assertEquals(this.car1Id, this.parkingLot.getSlotAtIndex(0).getCar().getId());
-    }
-
-    @Test
-    public void testParkTwoCars() {
-        this.parkingLot.parkCar(this.car1Id);
-        this.parkingLot.parkCar(this.car2Id);
-        assertEquals(this.car2Id, this.parkingLot.getSlotAtIndex(1).getCar().getId());
-    }
-
-    @Test
-    public void testParkTooManyCars() {
-        for (int i = 0; i < MAX_CAPACITY; i++) {
-            this.parkingLot.parkCar(i);
-        }
-        var exception = assertThrows(RuntimeException.class,
-                () -> this.parkingLot.parkCar(MAX_CAPACITY));
-        assertEquals("Can not park car, the parking lot is full", exception.getMessage());
-    }
-
-    @Test
-    public void testWillParkInClosestSlot() {
-        int car3Id = 3;
-        this.parkingLot.getSlotAtIndex(0).parkCar(new Car(1));
-        this.parkingLot.getSlotAtIndex(1).parkCar(new Car(2));
-        this.parkingLot.parkCar(car3Id);
-        assertEquals(car3Id, this.parkingLot.getSlotAtIndex(2).getCar().getId());
+        this.parkingLot = new ParkingLot(MAX_CAPACITY, this.slotRecord);
     }
 
     @Test
     public void testFindCar() throws Exception {
-        this.parkingLot.parkCar(this.car1Id);
-        String methodOutput = tapSystemOut(() -> this.parkingLot.findCar(this.car1Id)).trim();
-        assertEquals(
-                this.car1Id + " is parked at Slot number " + this.parkingLot.getSlotAtIndex(0).getNumber(),
-                methodOutput
-        );
+        this.parkingLot.parkCar(car1Id);
+        this.parkingLot.getCarById(car1Id).parkInSlot(SLOT_NUMBER_FOR_SLOT_0);
+        String methodOutput = tapSystemOut(() -> this.parkingLot.findCar(car1Id)).trim();
+        assertEquals(car1Id + " is parked at Slot number " + SLOT_NUMBER_FOR_SLOT_0, methodOutput);
     }
 
     @Test
     public void testCanNotFindCar() {
-        var exception = assertThrows(RuntimeException.class,
-                () -> this.parkingLot.findCar(this.notPresentId)
-        );
-        assertEquals("Car with id: " + this.notPresentId + " could not be found", exception.getMessage());
+        var exception = assertThrows(RuntimeException.class, () -> this.parkingLot.findCar(carNotPresentId));
+        assertEquals("Car with id: " + carNotPresentId + " could not be found", exception.getMessage());
     }
 
     @Test
     public void testPrint() throws Exception {
-        this.parkingLot.parkCar(this.car1Id);
-        this.parkingLot.parkCar(this.car2Id);
+        int car2Id = 2;
+        this.parkingLot.parkCar(car1Id);
+        this.parkingLot.parkCar(car2Id);
+        this.parkingLot.getCarById(car1Id).parkInSlot(SLOT_NUMBER_FOR_SLOT_0);
+        this.parkingLot.getCarById(car2Id).parkInSlot(SLOT_NUMBER_FOR_SLOT_1);
         String methodOutput = tapSystemOut(() -> this.parkingLot.print()).trim();
         assertEquals(
-                this.car1Id + " is parked at Slot number " + this.parkingLot.getSlotAtIndex(0).getNumber()
-                + "\n" + this.car2Id + " is parked at Slot number " + this.parkingLot.getSlotAtIndex(1).getNumber(),
+                car1Id + " is parked at Slot number " + SLOT_NUMBER_FOR_SLOT_0
+                + "\n" + car2Id + " is parked at Slot number " + SLOT_NUMBER_FOR_SLOT_1,
                 methodOutput
         );
     }
@@ -86,46 +63,17 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void testUnParkCar() throws Exception {
-        this.parkingLot.parkCar(this.car1Id);
-        String methodOutput = tapSystemOut(() -> this.parkingLot.unParkCar(this.car1Id)).trim();
-        assertEquals("Slot " + this.parkingLot.getSlotAtIndex(0).getNumber() + " is free", methodOutput);
-        assertNull(this.parkingLot.getSlotAtIndex(0).getCar());
-    }
-
-    @Test
-    public void testUnParkSecondCarInParkingLot() throws Exception {
-        this.parkingLot.parkCar(this.car1Id);
-        this.parkingLot.parkCar(this.car2Id);
-        String methodOutput = tapSystemOut(() -> this.parkingLot.unParkCar(this.car2Id)).trim();
-        assertEquals("Slot " + this.parkingLot.getSlotAtIndex(1).getNumber() + " is free", methodOutput);
-        assertNull(this.parkingLot.getSlotAtIndex(1).getCar());
-    }
-
-    @Test
-    public void testUnParkManyCars() throws Exception {
-        this.parkingLot.parkCar(this.car1Id);
-        this.parkingLot.parkCar(this.car2Id);
-
-        String methodOutput = tapSystemOut(() -> this.parkingLot.unParkCar(this.car2Id)).trim();
-        assertEquals("Slot " + this.parkingLot.getSlotAtIndex(1).getNumber() + " is free", methodOutput);
-        assertNull(this.parkingLot.getSlotAtIndex(1).getCar());
-
-        String SecondMethodOutput = tapSystemOut(() -> this.parkingLot.unParkCar(this.car1Id)).trim();
-        assertEquals("Slot " + this.parkingLot.getSlotAtIndex(0).getNumber() + " is free", SecondMethodOutput);
-        assertNull(this.parkingLot.getSlotAtIndex(0).getCar());
+    public void testUnParkCar() {
+        this.parkingLot.parkCar(car1Id);
+        this.parkingLot.getCarById(car1Id).parkInSlot(SLOT_NUMBER_FOR_SLOT_0);
+        doNothing().when(this.slotRecord).removeCar(any(Car.class));
+        this.parkingLot.unParkCar(car1Id);
+        verify(this.slotRecord, times(1)).removeCar(any(Car.class));
     }
 
     @Test
     public void TestUnParkACarThatIsNotInTheParkingLot() {
-        var exception = assertThrows(RuntimeException.class, () -> this.parkingLot.unParkCar(-1));
-        assertEquals("Can not un-park car with id: " + this.notPresentId, exception.getMessage());
-    }
-
-    @Test
-    public void TestUnParkACarThatIsInParkingLotButNotInASlot() {
-        this.parkingLot.addCarToRecord(car1Id, new Car(this.car1Id));
-        var exception = assertThrows(RuntimeException.class, () -> this.parkingLot.unParkCar(this.car1Id));
-        assertEquals("That car does not has a slot", exception.getMessage());
+        var exception = assertThrows(RuntimeException.class, () -> this.parkingLot.unParkCar(carNotPresentId));
+        assertEquals("Can not un-park car with id: " + carNotPresentId, exception.getMessage());
     }
 }

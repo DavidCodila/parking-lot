@@ -38,11 +38,6 @@ public class Slot {
     }
 
     @VisibleForTesting
-    public int getNumber() {
-        return this.number;
-    }
-
-    @VisibleForTesting
     Car getCar() {
         return this.car;
     }
