@@ -59,6 +59,7 @@ public class SlotRecordTest {
         assertEquals("Can not park car, the parking lot is full", exception.getMessage());
     }
 
+    //need to rewrite
     @Test
     public void testWillParkInClosestSlot() {
         int car3Id = 3;

@@ -35,7 +35,7 @@ public class Slot implements Observer, Comparable<Slot> {
 
     @Override
     public int compareTo(Slot otherSlot) {
-        return Integer.compare(otherSlot.distance, this.distance);
+        return Integer.compare(this.distance, otherSlot.distance);
     }
 
     @VisibleForTesting
