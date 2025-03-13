@@ -1,6 +1,6 @@
 import com.google.common.annotations.VisibleForTesting;
 
-public class Slot implements Observer {
+public class Slot implements Observer, Comparable<Slot> {
     private final int number;
     private final int distance;
     private Car car = null;
@@ -31,6 +31,11 @@ public class Slot implements Observer {
     public void unParkCar() {
         this.car = null;
         System.out.printf("Slot %d is free\n", this.number);
+    }
+
+    @Override
+    public int compareTo(Slot otherSlot) {
+        return Integer.compare(otherSlot.distance, this.distance);
     }
 
     @VisibleForTesting

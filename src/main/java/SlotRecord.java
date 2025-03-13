@@ -4,16 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SlotRecord {
-    private final List<Slot> slots = new ArrayList<>();
+    private List<Slot> slots = new ArrayList<>();
 
-    //need to think about altering distance assignment
-    public SlotRecord(int numberOfSlots) {
-        for (int i = 0; i < numberOfSlots; i++) {
-            this.slots.add(new Slot(i, i+1));
+    public SlotRecord(SlotListGenerator slotListGenerator) {
+        List<Slot> orderedSlots = slotListGenerator.generate().stream()
+                .sorted(Slot::compareTo)
+                .toList();
+        this.slots = generateChainOfResponsibilityListOfSlots(orderedSlots);
+    }
+
+    private List<Slot> generateChainOfResponsibilityListOfSlots(List<Slot> slots) {
+        int size = slots.size();
+        List<Slot> result = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            result.add(slots.get(i));
             if(i > 0) {
-                this.slots.get(i - 1).setNextSlot(this.slots.get(i));
+                result.get(i - 1).setNextSlot(result.get(i));
             }
         }
+        return result;
     }
 
     public void addCar(Car car) {

@@ -2,8 +2,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class SlotRecordTest {
     private static final int MAX_CAPACITY = 5;
@@ -11,6 +16,7 @@ public class SlotRecordTest {
     private static final int FIRST_INDEX = 1;
 
     private SlotRecord slotRecord;
+    @Mock private BasicSlotListGenerator basicSlotRecordGenerator;
     @Mock private Car car1;
     @Mock private Car car2;
 
@@ -19,8 +25,13 @@ public class SlotRecordTest {
     public void setUp() {
         int carId = 1;
         int car2Id = 2;
-
-        this.slotRecord = new SlotRecord(MAX_CAPACITY);
+        this.basicSlotRecordGenerator = mock(BasicSlotListGenerator.class);
+        List<Slot> slotList = new ArrayList<>(MAX_CAPACITY);
+        for (int i = 0; i < MAX_CAPACITY; i++) {
+            slotList.add(new Slot(i, (int)(Math.random() * 1000)));
+        }
+        when(this.basicSlotRecordGenerator.generate()).thenReturn(slotList);
+        this.slotRecord = new SlotRecord(this.basicSlotRecordGenerator);
         this.car1 = new Car(carId);
         this.car2 = new Car(car2Id);
 
