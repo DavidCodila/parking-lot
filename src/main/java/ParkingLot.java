@@ -1,6 +1,7 @@
 import com.google.common.annotations.VisibleForTesting;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ParkingLot {
@@ -31,13 +32,12 @@ public class ParkingLot {
         car.printInformation();
     }
 
-    //Need to find out what [PATTERN] is
-    public void print() {
+    public void print(List<Integer> carIds) {
         if (this.carRecord.isEmpty()) {
             System.out.println("No cars in the Parking Lot");
         } else {
-            for(Car car : this.carRecord.values()) {
-                car.printInformation();
+            for(Integer id : carIds) {
+                this.findCar(id);
             }
         }
     }

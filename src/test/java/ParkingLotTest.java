@@ -4,6 +4,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -62,15 +64,22 @@ public class ParkingLotTest {
     public void testPrint() {
         this.parkingLot.addCarToCarRecord(CAR_1_ID, this.car);
         this.parkingLot.addCarToCarRecord(CAR_2_ID, this.car2);
-        this.parkingLot.print();
+        this.parkingLot.print(List.of(CAR_1_ID, CAR_2_ID));
         verify(this.car, times(1)).printInformation();
         verify(this.car2, times(1)).printInformation();
     }
 
     @Test
     public void testPrintWithNoCarsInParkingLot() throws Exception {
-        String methodOutput = tapSystemOut(() -> this.parkingLot.print()).trim();
+        String methodOutput = tapSystemOut(() -> this.parkingLot.print(List.of(CAR_1_ID))).trim();
         assertEquals("No cars in the Parking Lot", methodOutput);
+    }
+
+    @Test
+    public void testPrintWithWrongCarId() {
+        this.parkingLot.addCarToCarRecord(CAR_1_ID, this.car);
+        var exception = assertThrows(RuntimeException.class, () -> this.parkingLot.print(List.of(CAR_NOT_PRESENT_ID)));
+        assertEquals("Car with id: " + CAR_NOT_PRESENT_ID + " could not be found", exception.getMessage());
     }
 
     @Test
