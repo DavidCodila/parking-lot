@@ -48,6 +48,7 @@ public class ParkingLot {
             throw new RuntimeException("Can not un-park car with id: " + id);
         }
         car.unPark();
+        this.carRecord.remove(id);
     }
 
     @VisibleForTesting

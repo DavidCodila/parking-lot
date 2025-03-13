@@ -88,6 +88,7 @@ public class ParkingLotTest {
         this.parkingLot.addCarToCarRecord(CAR_1_ID, this.car);
         this.parkingLot.unParkCar(CAR_1_ID);
         verify(this.car, times(1)).unPark();
+        assertNull(this.parkingLot.getCarFromCarRecordById(CAR_1_ID));
     }
 
     @Test
