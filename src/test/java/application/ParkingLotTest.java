@@ -63,24 +63,24 @@ public class ParkingLotTest {
     }
 
     @Test
-    public void testPrint() {
+    public void testListCars() {
         this.parkingLot.addCarToCarRecord(CAR_1_ID, this.car);
         this.parkingLot.addCarToCarRecord(CAR_2_ID, this.car2);
-        this.parkingLot.print(List.of(CAR_1_ID, CAR_2_ID));
+        this.parkingLot.listCars(List.of(CAR_1_ID, CAR_2_ID));
         verify(this.car, times(1)).printInformation();
         verify(this.car2, times(1)).printInformation();
     }
 
     @Test
-    public void testPrintWithNoCarsInParkingLot() throws Exception {
-        String methodOutput = tapSystemOut(() -> this.parkingLot.print(List.of(CAR_1_ID))).trim();
+    public void testListCarsWithNoCarsInParkingLot() throws Exception {
+        String methodOutput = tapSystemOut(() -> this.parkingLot.listCars(List.of(CAR_1_ID))).trim();
         assertEquals("No cars in the Parking Lot", methodOutput);
     }
 
     @Test
-    public void testPrintWithWrongCarId() {
+    public void testListCarsWithWrongCarId() {
         this.parkingLot.addCarToCarRecord(CAR_1_ID, this.car);
-        var exception = assertThrows(RuntimeException.class, () -> this.parkingLot.print(List.of(CAR_NOT_PRESENT_ID)));
+        var exception = assertThrows(RuntimeException.class, () -> this.parkingLot.listCars(List.of(CAR_NOT_PRESENT_ID)));
         assertEquals("Car with id: " + CAR_NOT_PRESENT_ID + " could not be found", exception.getMessage());
     }
 

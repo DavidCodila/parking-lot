@@ -34,7 +34,7 @@ public class ParkingLot {
         car.printInformation();
     }
 
-    public void print(List<Integer> carIds) {
+    public void listCars(List<Integer> carIds) {
         if (this.carRecord.isEmpty()) {
             System.out.println("No cars in the Parking Lot");
         } else {

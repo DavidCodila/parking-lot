@@ -10,7 +10,7 @@ public class SlotRecord {
 
     public SlotRecord(SlotListGenerator slotListGenerator) {
         List<Slot> orderedSlots = slotListGenerator.generate().stream()
-                .sorted(Slot::compareTo)
+                .sorted(Slot::compareDistanceTo)
                 .toList();
         this.slots = generateChainOfResponsibilityListOfSlots(orderedSlots);
     }
@@ -34,5 +34,10 @@ public class SlotRecord {
     @VisibleForTesting
     Car getCarAtIndex(int i) throws IndexOutOfBoundsException {
         return this.slots.get(i).getCar();
+    }
+
+    @VisibleForTesting
+    void setCarAtIndex(int i, Car car) throws IndexOutOfBoundsException {
+        this.slots.get(i).setCar(car);
     }
 }

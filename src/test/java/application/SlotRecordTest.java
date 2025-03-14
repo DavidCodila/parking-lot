@@ -61,13 +61,12 @@ public class SlotRecordTest {
         assertEquals("Can not park car, the parking lot is full", exception.getMessage());
     }
 
-    //need to rewrite
     @Test
     public void testWillParkInClosestSlot() {
         int car3Id = 3;
         final int SECOND_INDEX = 2;
         Car car3 = new Car(car3Id);
-        this.slotRecord.addCar(this.car2);
+        this.slotRecord.setCarAtIndex(FIRST_INDEX, this.car2);
         this.slotRecord.addCar(car3);
         assertEquals(car3, this.slotRecord.getCarAtIndex(SECOND_INDEX));
     }

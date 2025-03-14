@@ -2,17 +2,21 @@ package command;
 
 import application.ParkingLot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListCarCommand implements Command {
-    private final List<Integer> ids;
+    private final List<Integer> ids = new ArrayList<>();
 
     public ListCarCommand(String commandLine) {
-        this.ids = null; //need to come back to this
+        String[] commandParameters = commandLine.split(" ");
+        for (int i = 1; i < commandParameters.length; i++) {
+            this.ids.add(Integer.parseInt(commandParameters[i]));
+        }
     }
 
     @Override
     public void execute(ParkingLot parkingLot) {
-        parkingLot.print(ids);
+        parkingLot.listCars(this.ids);
     }
 }
