@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -6,21 +7,20 @@ public class Main {
         final String PATH_TO_COMMAND_FILE = "./src/main/resources/commands";
         final String LINE_DELIMITER = "\r\n";
 
-        FileReader fileReader = new FileReader(PATH_TO_COMMAND_FILE, LINE_DELIMITER);
-        String[] commandLines = fileReader.getLines();
-        CommandConstants.validateCommandLines(commandLines);
+        FileReader fileReader = new FileReader(PATH_TO_COMMAND_FILE);
+        String[] commandLines = fileReader.getLines(LINE_DELIMITER);
 
         ParkingLot parkingLot = new ParkingLot(
                 MAX_CAPACITY,
                 new SlotRecord(new BasicSlotListGenerator(MAX_CAPACITY))
         );
+
+        CommandGenerator commandGenerator = new CommandGenerator();
         CommandRemote commandRemote = new CommandRemote(parkingLot);
 
-        for (String commandLine: commandLines) {
-            String command = commandLine.split(" ")[0];
-            int parameter = Integer.parseInt(commandLine.split(" ")[1]);
-            Command commandObject = CommandConstants.createCommand(command, parameter);
-            commandRemote.executeCommand(commandObject);
+        List<Command> commands = commandGenerator.generateCommands(commandLines);
+        for (Command command: commands) {
+            commandRemote.executeCommand(command);
         }
     }
 }

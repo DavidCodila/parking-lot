@@ -5,19 +5,17 @@ import java.nio.file.Path;
 
 public class FileReader {
     private final Path path;
-    private final String lineDelimiter;
 
-    public FileReader(String path, String delimiter) {
+    public FileReader(String path) {
         this.path = Path.of(path);
-        this.lineDelimiter = delimiter;
     }
 
-    public String[] getLines() throws IOException {
+    public String[] getLines(String delimiter) throws IOException {
         if (!Files.exists(this.path)) {
             throw new FileNotFoundException("File with path: " + this.path + " not found");
         }
         return Files.readString(this.path)
                 .trim()
-                .split(this.lineDelimiter);
+                .split(delimiter);
     }
 }

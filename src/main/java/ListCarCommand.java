@@ -3,8 +3,8 @@ import java.util.List;
 public class ListCarCommand implements Command {
     private final List<Integer> ids;
 
-    public ListCarCommand(List<Integer> ids) {
-        this.ids = ids;
+    public ListCarCommand(String commandLine) {
+        this.ids = null; //need to come back to this
     }
 
     @Override
