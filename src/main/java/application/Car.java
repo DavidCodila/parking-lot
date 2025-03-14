@@ -1,3 +1,5 @@
+package application;
+
 public class Car {
     private final int id;
     private int slotNumber;
@@ -25,3 +27,4 @@ public class Car {
         this.observer = observer;
     }
 }
+

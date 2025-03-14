@@ -1,3 +1,5 @@
+package application;
+
 import com.google.common.annotations.VisibleForTesting;
 
 import java.util.HashMap;

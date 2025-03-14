@@ -1,3 +1,5 @@
+package application;
+
 import com.google.common.annotations.VisibleForTesting;
 
 public class Slot implements Observer, Comparable<Slot> {

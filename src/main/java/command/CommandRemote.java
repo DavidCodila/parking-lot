@@ -1,3 +1,7 @@
+package command;
+
+import application.ParkingLot;
+
 public class CommandRemote {
     private final ParkingLot parkingLot;
 

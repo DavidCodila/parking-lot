@@ -1,3 +1,7 @@
+package command;
+
+import application.ParkingLot;
+
 import java.util.List;
 
 public class ListCarCommand implements Command {

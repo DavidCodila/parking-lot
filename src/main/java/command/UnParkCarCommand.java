@@ -1,3 +1,7 @@
+package command;
+
+import application.ParkingLot;
+
 public class UnParkCarCommand implements Command {
     private final int id;
 
