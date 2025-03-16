@@ -4,7 +4,7 @@ import application.SlotRecord;
 import command.Command;
 import command.CommandGenerator;
 import command.CommandRemote;
-import file.FileReader;
+import file.File;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ public class Main {
         final String PATH_TO_COMMAND_FILE = "./src/main/resources/commands";
         final String LINE_DELIMITER = "\r\n";
 
-        FileReader fileReader = new FileReader(PATH_TO_COMMAND_FILE);
-        String[] commandLines = fileReader.getLines(LINE_DELIMITER);
+        File file = new File(PATH_TO_COMMAND_FILE);
+        String[] commandLines = file.getLines(LINE_DELIMITER);
 
         final int MAX_CAPACITY = 5;
         ParkingLot parkingLot = new ParkingLot(

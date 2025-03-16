@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class FileReader {
+public class File {
     private final Path path;
 
-    public FileReader(String pathToFile) throws FileNotFoundException {
+    public File(String pathToFile) throws FileNotFoundException {
         Path path = Path.of(pathToFile);
         if (!Files.exists(path)) {
             throw new FileNotFoundException("File with path: " + pathToFile + " not found");
