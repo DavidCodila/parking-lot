@@ -2,50 +2,38 @@ package application;
 
 import com.google.common.annotations.VisibleForTesting;
 
-public class Slot implements Observer {
+public class Slot implements CarObserver {
     private final int number;
-    private final int distance;
     private Car car = null;
-    private Slot nextSlot = null;
+    public SlotObserver slotObserver;
 
-    public Slot(int number, int distance) {
+    public Slot(int number) {
         this.number = number;
-        this.distance = distance;
     }
 
-    public void setNextSlot(Slot slot) {
-        this.nextSlot = slot;
+    public void setSlotObserver(SlotObserver slotObserver) {
+        this.slotObserver = slotObserver;
     }
 
     public void parkCar(Car car) {
         if (this.car == null) {
             this.car = car;
             this.car.parkInSlot(this.number);
-            this.car.setObserver(this);
-        } else if (this.nextSlot != null) {
-            this.nextSlot.parkCar(car);
+            this.car.setCarObserver(this);
         } else {
-            throw new RuntimeException("Can not park car, the parking lot is full");
+            throw new RuntimeException("Can not park car in slot number: " + this.number);
         }
-    }
-
-    public int compareDistanceTo(Slot otherSlot) {
-        return Integer.compare(this.distance, otherSlot.distance);
     }
 
     @Override
     public void unParkCar() {
         this.car = null;
+        this.slotObserver.onUnParkCar(this);
         System.out.printf("Slot %d is free\n", this.number);
     }
 
     @VisibleForTesting
     Car getCar() {
         return this.car;
-    }
-
-    @VisibleForTesting
-    void setCar(Car car) {
-        this.car = car;
     }
 }

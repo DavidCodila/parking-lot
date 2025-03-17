@@ -9,9 +9,9 @@ import java.util.Map;
 public class ParkingLot {
     private final int MAX_CAPACITY;
     private final Map<Integer, Car> carRecord = new HashMap<>();
-    private final SlotRecord slotRecord;
+    private final SlotHandler slotRecord;
 
-    public ParkingLot(int maxCapacity, SlotRecord slotRecord) {
+    public ParkingLot(int maxCapacity, SlotHandler slotRecord) {
         this.MAX_CAPACITY = maxCapacity;
         this.slotRecord = slotRecord;
     }
@@ -19,7 +19,7 @@ public class ParkingLot {
     public void parkCar(int id) {
         if (this.carRecord.size() < this.MAX_CAPACITY) {
             Car car = new Car(id);
-            this.slotRecord.addCar(car);
+            this.slotRecord.parkCar(car);
             this.carRecord.put(id, car);
         } else {
             throw new RuntimeException("Can not park car, parking lot is full");
@@ -27,11 +27,8 @@ public class ParkingLot {
     }
 
     public void findCar(int id) {
-        Car car = this.carRecord.get(id);
-        if (car == null) {
-            throw new RuntimeException("Car with id: " + id + " could not be found");
-        }
-        car.printInformation();
+        this.validateCarRecordContainsKey(id);
+        this.carRecord.get(id).printInformation();
     }
 
     public void listCars(List<Integer> carIds) {
@@ -45,12 +42,15 @@ public class ParkingLot {
     }
 
     public void unParkCar(int id) {
-        Car car = this.carRecord.get(id);
-        if (car == null) {
-            throw new RuntimeException("Can not un-park car with id: " + id);
-        }
-        car.unPark();
+        this.validateCarRecordContainsKey(id);
+        this.carRecord.get(id).unPark();
         this.carRecord.remove(id);
+    }
+
+    private void validateCarRecordContainsKey(int id) {
+        if (!this.carRecord.containsKey(id)) {
+            throw new RuntimeException("Car with id: " + id + " could not be found");
+        }
     }
 
     @VisibleForTesting

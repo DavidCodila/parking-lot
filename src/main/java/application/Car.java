@@ -3,7 +3,7 @@ package application;
 public class Car {
     private final int id;
     private int slotNumber;
-    private Observer observer = null;
+    private CarObserver carObserver = null;
 
     public Car(int id) {
         this.id = id;
@@ -19,12 +19,12 @@ public class Car {
     }
 
     public void unPark() {
-        this.observer.unParkCar();
-        this.observer = null;
+        this.carObserver.unParkCar();
+        this.carObserver = null;
     }
 
-    public void setObserver(Observer observer) {
-        this.observer = observer;
+    public void setCarObserver(CarObserver carObserver) {
+        this.carObserver = carObserver;
     }
 }
 

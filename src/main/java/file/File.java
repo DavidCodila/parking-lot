@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+//responsible for representing a file
 public class File {
     private final Path path;
 

@@ -11,8 +11,8 @@ public class BasicSlotRecordGeneratorTest {
 
     @Test
     public void testGeneratesListOfSlots() {
-        BasicSlotListGenerator basicSlotListGenerator = new BasicSlotListGenerator(MAX_NUMBER_OF_SLOTS);
-        List<Slot> result = basicSlotListGenerator.generate();
+        BasicRecordGenerator basicSlotListGenerator = new BasicRecordGenerator(MAX_NUMBER_OF_SLOTS);
+        List<SlotRecord> result = basicSlotListGenerator.generate();
         assertEquals(MAX_NUMBER_OF_SLOTS, result.size());
     }
 }

@@ -20,7 +20,7 @@ public class ParkingLotTest {
     private static final int CAR_NOT_PRESENT_ID = -1;
     
     private ParkingLot parkingLot;
-    @Mock private SlotRecord slotRecord;
+    @Mock private SlotHandler slotRecord;
     @Mock private Car car;
     @Mock private Car car2;
 
@@ -32,15 +32,15 @@ public class ParkingLotTest {
 
     @Test
     public void testParkCar() {
-        doNothing().when(this.slotRecord).addCar(any(Car.class));
+        doNothing().when(this.slotRecord).parkCar(any(Car.class));
         this.parkingLot.parkCar(CAR_1_ID);
-        verify(this.slotRecord, times(1)).addCar(any(Car.class));
+        verify(this.slotRecord, times(1)).parkCar(any(Car.class));
         assertNotNull(this.parkingLot.getCarFromCarRecordById(CAR_1_ID));
     }
 
     @Test
-    public void testParkToManyCars() {
-        doNothing().when(this.slotRecord).addCar(any(Car.class));
+    public void testParkTooManyCars() {
+        doNothing().when(this.slotRecord).parkCar(any(Car.class));
         for (int i = 0; i < MAX_CAPACITY; i++) {
             this.parkingLot.parkCar(i);
         }
@@ -96,6 +96,6 @@ public class ParkingLotTest {
     @Test
     public void TestUnParkACarThatIsNotInTheParkingLot() {
         var exception = assertThrows(RuntimeException.class, () -> this.parkingLot.unParkCar(CAR_NOT_PRESENT_ID));
-        assertEquals("Can not un-park car with id: " + CAR_NOT_PRESENT_ID, exception.getMessage());
+        assertEquals("Car with id: " + CAR_NOT_PRESENT_ID + " could not be found", exception.getMessage());
     }
 }

@@ -1,5 +1,5 @@
 package application;
 
-public interface Observer {
+public interface CarObserver {
     void unParkCar();
 }

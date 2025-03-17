@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 public class CarTest {
@@ -32,12 +33,12 @@ public class CarTest {
 
     @Test
     public void testUnPark() {
-        Observer observer = mock(Observer.class);
-        doNothing().when(observer).unParkCar();
+        CarObserver carObserver = mock(CarObserver.class);
+        doNothing().when(carObserver).unParkCar();
 
-        this.car.setObserver(observer);
+        this.car.setCarObserver(carObserver);
         this.car.unPark();
 
-        verify(observer, times(1)).unParkCar();
+        verify(carObserver, times(1)).unParkCar();
     }
 }
