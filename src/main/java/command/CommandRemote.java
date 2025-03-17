@@ -9,7 +9,7 @@ public class CommandRemote {
         this.parkingLot = parkingLot;
     }
 
-    public void executeCommand(Command command) {
+    public void execute(CommandInterface command) {
         command.execute(this.parkingLot);
     }
 }

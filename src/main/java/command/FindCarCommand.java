@@ -2,7 +2,7 @@ package command;
 
 import application.ParkingLot;
 
-public class FindCarCommand implements Command {
+public class FindCarCommand implements CommandInterface {
     private final int id;
 
     public FindCarCommand(int id) {

@@ -2,13 +2,10 @@ import application.BasicSlotListGenerator;
 import application.ParkingLot;
 import application.SlotRecord;
 import command.Command;
-import command.CommandGenerator;
 import command.CommandRemote;
 import file.File;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -25,15 +22,10 @@ public class Main {
         );
 
         CommandRemote commandRemote = new CommandRemote(parkingLot);
-        CommandGenerator commandGenerator = new CommandGenerator();
 
-        List<Command> commands = new ArrayList<>();
         for (String commandLine: commandLines) {
-            commands.add(commandGenerator.generateCommand(commandLine));
-        }
-
-        for (Command command: commands) {
-            commandRemote.executeCommand(command);
+            Command command = new Command(commandLine);
+            commandRemote.execute(command);
         }
     }
 }

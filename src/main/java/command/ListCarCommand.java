@@ -5,7 +5,7 @@ import application.ParkingLot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListCarCommand implements Command {
+public class ListCarCommand implements CommandInterface {
     private final List<Integer> ids = new ArrayList<>();
 
     public ListCarCommand(String commandLine) {

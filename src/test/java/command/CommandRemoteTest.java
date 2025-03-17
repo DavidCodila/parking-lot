@@ -10,9 +10,9 @@ public class CommandRemoteTest {
     public void testExecuteCommand() {
         ParkingLot parkingLot = mock(ParkingLot.class);
         CommandRemote commandRemote = new CommandRemote(parkingLot);
-        Command command = mock(Command.class);
+        CommandInterface command = mock(CommandInterface.class);
         doNothing().when(command).execute(any());
-        commandRemote.executeCommand(command);
+        commandRemote.execute(command);
         verify(command, times(1)).execute(any());
     }
 }

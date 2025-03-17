@@ -2,7 +2,7 @@ package command;
 
 import application.ParkingLot;
 
-public class ParkCarCommand implements Command {
+public class ParkCarCommand implements CommandInterface {
     private final int id;
 
     public ParkCarCommand(int id) {
