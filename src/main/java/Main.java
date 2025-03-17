@@ -1,4 +1,4 @@
-import application.BasicRecordGenerator;
+import application.BasicSlotRecordGenerator;
 import application.ParkingLot;
 import application.SlotHandler;
 import command.Command;
@@ -18,7 +18,7 @@ public class Main {
         final int MAX_CAPACITY = 5;
         ParkingLot parkingLot = new ParkingLot(
                 MAX_CAPACITY,
-                new SlotHandler(new BasicRecordGenerator(MAX_CAPACITY))
+                new SlotHandler(new BasicSlotRecordGenerator(MAX_CAPACITY))
         );
 
         CommandRemote commandRemote = new CommandRemote(parkingLot);

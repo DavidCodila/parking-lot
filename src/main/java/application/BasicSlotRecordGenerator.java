@@ -3,11 +3,11 @@ package application;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BasicRecordGenerator implements SlotRecordGenerator {
+public class BasicSlotRecordGenerator implements SlotRecordGenerator {
 
     private final int size;
 
-    public BasicRecordGenerator(int numberOfSlots) {
+    public BasicSlotRecordGenerator(int numberOfSlots) {
         this.size = numberOfSlots;
     }
 

@@ -17,14 +17,14 @@ public class SlotHandlerTest {
     private static final int FIRST_INDEX = 1;
 
     private SlotHandler slotHandler;
-    @Mock private BasicRecordGenerator basicSlotRecordGenerator;
+    @Mock private BasicSlotRecordGenerator basicSlotRecordGenerator;
     @Mock private Car car1;
     @Mock private Car car2;
 
 
     @BeforeEach
     public void setUp() {
-        this.basicSlotRecordGenerator = mock(BasicRecordGenerator.class);
+        this.basicSlotRecordGenerator = mock(BasicSlotRecordGenerator.class);
         List<SlotRecord> slotList = new ArrayList<>(MAX_CAPACITY);
         for (int i = 0; i < MAX_CAPACITY; i++) {
             slotList.add(new SlotRecord(new Slot(i), i));
