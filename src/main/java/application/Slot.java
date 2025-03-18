@@ -2,33 +2,32 @@ package application;
 
 import com.google.common.annotations.VisibleForTesting;
 
-public class Slot implements CarObserver {
+public class Slot {
     private final int number;
     private Car car = null;
-    public SlotObserver slotObserver;
+    private UnParkFromSlotFunctionInterface unParkFromSlotFunction;
 
     public Slot(int number) {
         this.number = number;
     }
 
-    public void setSlotObserver(SlotObserver slotObserver) {
-        this.slotObserver = slotObserver;
+    public void setUnParkFromSlotFunction(UnParkFromSlotFunctionInterface unParkFromSlotFunction) {
+        this.unParkFromSlotFunction = unParkFromSlotFunction;
     }
 
     public void parkCar(Car car) {
         if (this.car == null) {
             this.car = car;
             this.car.parkInSlot(this.number);
-            this.car.setCarObserver(this);
+            this.car.setUnParkCarFunction(this::unParkCar);
         } else {
             throw new RuntimeException("Can not park car in slot number: " + this.number);
         }
     }
 
-    @Override
     public void unParkCar() {
         this.car = null;
-        this.slotObserver.onUnParkCar(this);
+        this.unParkFromSlotFunction.execute(this);
         System.out.printf("Slot %d is free\n", this.number);
     }
 

@@ -6,7 +6,7 @@ import java.util.*;
 
 import static java.util.Map.Entry;
 
-public class SlotHandler implements SlotObserver {
+public class SlotHandler {
     private final Map<Integer, Slot> vacantSlotRegister = new Hashtable<>();
     private final Map<Integer, Slot> occupiedSlotRegister = new Hashtable<>();
 
@@ -15,7 +15,7 @@ public class SlotHandler implements SlotObserver {
                 .sorted(Comparator.comparingInt(SlotRecord::distance))
                 .map(SlotRecord::slot)
                 .toList();
-        orderedSlots.forEach(slot -> slot.setSlotObserver(this));
+        orderedSlots.forEach(slot -> slot.setUnParkFromSlotFunction(this::onUnParkCar));
         for (int i = 0; i < orderedSlots.size(); i++) {
             this.vacantSlotRegister.put(i, orderedSlots.get(i));
         }
@@ -36,7 +36,6 @@ public class SlotHandler implements SlotObserver {
         }
     }
 
-    @Override
     public void onUnParkCar(Slot slot) {
         Entry<Integer, Slot> slotEntryToUnPark = this.occupiedSlotRegister.entrySet()
                 .stream()

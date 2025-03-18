@@ -60,11 +60,13 @@ public class SlotHandlerTest {
 
     @Test
     public void testWillParkInClosestSlot() {
-        this.slotHandler.parkCar(this.car1);
+        this.slotHandler.setCarAtIndex(ZER0TH_INDEX, this.car1);
+        this.slotHandler.setCarAtIndex(FIRST_INDEX, this.car2);
+
         final int SECOND_INDEX = 2;
         Car car3 = mock(Car.class);
-        this.slotHandler.setCarAtIndex(FIRST_INDEX, this.car2);
         this.slotHandler.parkCar(car3);
+
         assertEquals(car3, this.slotHandler.getCarAtIndex(SECOND_INDEX));
     }
 

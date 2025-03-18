@@ -33,12 +33,12 @@ public class CarTest {
 
     @Test
     public void testUnPark() {
-        CarObserver carObserver = mock(CarObserver.class);
-        doNothing().when(carObserver).unParkCar();
+        UnParkCarFunctionInterface function = mock(UnParkCarFunctionInterface.class);
+        doNothing().when(function).execute();
 
-        this.car.setCarObserver(carObserver);
+        this.car.setUnParkCarFunction(function);
         this.car.unPark();
 
-        verify(carObserver, times(1)).unParkCar();
+        verify(function, times(1)).execute();
     }
 }

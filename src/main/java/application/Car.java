@@ -3,7 +3,7 @@ package application;
 public class Car {
     private final int id;
     private int slotNumber;
-    private CarObserver carObserver = null;
+    private UnParkCarFunctionInterface unParkCarFunction;
 
     public Car(int id) {
         this.id = id;
@@ -19,12 +19,12 @@ public class Car {
     }
 
     public void unPark() {
-        this.carObserver.unParkCar();
-        this.carObserver = null;
+        this.unParkCarFunction.execute();
+        this.unParkCarFunction = null;
     }
 
-    public void setCarObserver(CarObserver carObserver) {
-        this.carObserver = carObserver;
+    public void setUnParkCarFunction(UnParkCarFunctionInterface unParkCarFunction) {
+        this.unParkCarFunction = unParkCarFunction;
     }
 }
 

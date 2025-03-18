@@ -30,13 +30,16 @@ public class SlotTest {
 
     @Test
     public void testUnParkCar() throws Exception {
-        SlotHandler slotHandler = mock(SlotHandler.class);
-        this.slot.setSlotObserver(slotHandler);
-        doNothing().when(slotHandler).onUnParkCar(this.slot);
+
+        UnParkFromSlotFunctionInterface function = mock(UnParkFromSlotFunctionInterface.class);
+        this.slot.setUnParkFromSlotFunction(function);
+        doNothing().when(function).execute(this.slot);
+
         String methodOutput = tapSystemOut(() -> this.slot.unParkCar()).trim();
+
         assertEquals("Slot " + SLOT_NUMBER + " is free", methodOutput);
         assertNull(this.slot.getCar());
-        verify(slotHandler, times(1)).onUnParkCar(this.slot);
+        verify(function, times(1)).execute(this.slot);
     }
 
     @Test
