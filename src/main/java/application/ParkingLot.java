@@ -31,11 +31,11 @@ public class ParkingLot {
         this.carRecord.get(id).printInformation();
     }
 
-    public void listCars(List<Integer> carIds) {
+    public void listCars(List<Integer> ids) {
         if (this.carRecord.isEmpty()) {
             System.out.println("No cars in the Parking Lot");
         } else {
-            for(Integer id : carIds) {
+            for(Integer id : ids) {
                 this.findCar(id);
             }
         }
