@@ -1,5 +1,7 @@
 package application;
 
+import application.interfaces.SlotRecordGenerator;
+
 import java.util.ArrayList;
 import java.util.List;
 

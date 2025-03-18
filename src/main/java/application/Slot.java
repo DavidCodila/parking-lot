@@ -1,5 +1,6 @@
 package application;
 
+import application.interfaces.UnParkFromSlotFunctionInterface;
 import com.google.common.annotations.VisibleForTesting;
 
 public class Slot {

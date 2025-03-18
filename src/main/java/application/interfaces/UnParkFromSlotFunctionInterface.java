@@ -1,4 +1,6 @@
-package application;
+package application.interfaces;
+
+import application.Slot;
 
 @FunctionalInterface
 public interface UnParkFromSlotFunctionInterface {

@@ -1,5 +1,6 @@
 package application;
 
+import application.interfaces.SlotRecordGenerator;
 import com.google.common.annotations.VisibleForTesting;
 
 import java.util.*;

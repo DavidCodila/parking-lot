@@ -1,4 +1,6 @@
-package application;
+package application.interfaces;
+
+import application.SlotRecord;
 
 import java.util.List;
 

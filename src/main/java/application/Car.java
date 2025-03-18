@@ -1,5 +1,7 @@
 package application;
 
+import application.interfaces.UnParkCarFunctionInterface;
+
 public class Car {
     private final int id;
     private int slotNumber;
