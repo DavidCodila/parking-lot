@@ -2,6 +2,8 @@ package command;
 
 import application.ParkingLot;
 
+import java.util.List;
+
 public class CommandRemote {
     private final ParkingLot parkingLot;
 
@@ -9,7 +11,11 @@ public class CommandRemote {
         this.parkingLot = parkingLot;
     }
 
-    public void execute(CommandInterface command) {
+    public void executeCommands(List<CommandInterface> commands) {
+        commands.forEach(this::execute);
+    }
+
+    private void execute(CommandInterface command) {
         command.execute(this.parkingLot);
     }
 }

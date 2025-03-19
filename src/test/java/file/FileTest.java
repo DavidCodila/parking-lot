@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,8 +18,8 @@ public class FileTest {
     @Test
     public void testGetLines() throws IOException {
         this.file = new File(PATH_TO_TEST_COMMAND_FILE);
-        String[] expectedOutput = {"PARK_CAR 0", "FIND 0", "PARK_CAR 1", "LIST 0 1", "UN_PARK_CAR 0"};
-        assertArrayEquals(expectedOutput, file.getLines(LINE_DELIMITER_FOR_TEST));
+        List<String> expectedOutput = List.of("PARK_CAR 0", "FIND 0", "PARK_CAR 1", "LIST 0 1", "UN_PARK_CAR 0");
+        assertLinesMatch(expectedOutput, file.getLines(LINE_DELIMITER_FOR_TEST));
     }
 
     @Test

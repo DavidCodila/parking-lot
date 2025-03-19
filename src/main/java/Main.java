@@ -1,19 +1,25 @@
 import application.BasicSlotRecordGenerator;
 import application.ParkingLot;
 import application.SlotHandler;
-import command.Command;
+import command.CommandGenerator;
+import command.CommandInterface;
 import command.CommandRemote;
 import file.File;
+import file.FileProcessor;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         final String PATH_TO_COMMAND_FILE = "./src/main/resources/commands";
-        final String LINE_DELIMITER = "\r\n";
 
-        File file = new File(PATH_TO_COMMAND_FILE);
-        String[] commandLines = file.getLines(LINE_DELIMITER);
+        FileProcessor fileProcessor = new FileProcessor(
+                new File(PATH_TO_COMMAND_FILE),
+                new CommandGenerator()
+        );
+
+        List<CommandInterface> commands = fileProcessor.getCommands();
 
         final int MAX_CAPACITY = 5;
         ParkingLot parkingLot = new ParkingLot(
@@ -22,10 +28,6 @@ public class Main {
         );
 
         CommandRemote commandRemote = new CommandRemote(parkingLot);
-
-        for (String commandLine: commandLines) {
-            Command command = new Command(commandLine);
-            commandRemote.execute(command);
-        }
+        commandRemote.executeCommands(commands);
     }
 }

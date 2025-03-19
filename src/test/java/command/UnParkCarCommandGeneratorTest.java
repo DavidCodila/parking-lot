@@ -5,15 +5,15 @@ import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;
 
-public class FindCarCommandTest {
+public class UnParkCarCommandGeneratorTest {
     private static final int ID = 0;
 
     @Test
     public void testExecute() {
-        FindCarCommand findCarCommand = new FindCarCommand(ID);
+        UnParkCarCommand unParkCarCommand = new UnParkCarCommand(ID);
         ParkingLot parkingLot = mock(ParkingLot.class);
-        doNothing().when(parkingLot).findCar(ID);
-        findCarCommand.execute(parkingLot);
-        verify(parkingLot, times(1)).findCar(ID);
+        doNothing().when(parkingLot).unParkCar(ID);
+        unParkCarCommand.execute(parkingLot);
+        verify(parkingLot, times(1)).unParkCar(ID);
     }
 }

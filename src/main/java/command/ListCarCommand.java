@@ -2,17 +2,13 @@ package command;
 
 import application.ParkingLot;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListCarCommand implements CommandInterface {
-    private final List<Integer> ids = new ArrayList<>();
+    private final List<Integer> ids;
 
-    public ListCarCommand(String commandLine) {
-        String[] commandParameters = commandLine.split(" ");
-        for (int i = 1; i < commandParameters.length; i++) {
-            this.ids.add(Integer.parseInt(commandParameters[i]));
-        }
+    public ListCarCommand(List<Integer> ids) {
+        this.ids = ids;
     }
 
     @Override

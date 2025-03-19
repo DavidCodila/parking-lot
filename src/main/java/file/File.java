@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
 
 //responsible for representing a file
 public class File {
@@ -17,9 +19,10 @@ public class File {
         this.path = path;
     }
 
-    public String[] getLines(String delimiter) throws IOException {
-        return Files.readString(this.path)
+    public List<String> getLines(String delimiter) throws IOException {
+        return Arrays.stream(Files.readString(this.path)
                 .trim()
-                .split(delimiter);
+                .split(delimiter))
+                .toList();
     }
 }
