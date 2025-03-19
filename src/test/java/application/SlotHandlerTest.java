@@ -18,9 +18,6 @@ public class SlotHandlerTest {
 
     private SlotHandler slotHandler;
     @Mock private BasicSlotRecordGenerator basicSlotRecordGenerator;
-    @Mock private Car car1;
-    @Mock private Car car2;
-
 
     @BeforeEach
     public void setUp() {
@@ -31,58 +28,53 @@ public class SlotHandlerTest {
         }
         when(this.basicSlotRecordGenerator.generate()).thenReturn(slotList);
         this.slotHandler = new SlotHandler(this.basicSlotRecordGenerator);
-        this.car1 = mock(Car.class);
-        this.car2 = mock(Car.class);
     }
 
     @Test
-    public void testParkCar() {
-        this.slotHandler.parkCar(this.car1);
-        assertEquals(this.car1, this.slotHandler.getCarAtIndex(ZER0TH_INDEX));
+    public void testGetNextVacantSlot() {
+        Slot expected = this.slotHandler.getVacantSlotAtIndex(ZER0TH_INDEX);
+        assertEquals(this.slotHandler.getNextVacantSlot(), expected);
     }
 
     @Test
-    public void testParkTwoCars() {
-        this.slotHandler.parkCar(this.car1);
-        this.slotHandler.parkCar(this.car2);
-        assertEquals(this.car2, this.slotHandler.getCarAtIndex(FIRST_INDEX));
+    public void testGetSecondVacantSlot() {
+        Slot expected = this.slotHandler.getVacantSlotAtIndex(FIRST_INDEX);
+        this.slotHandler.getNextVacantSlot();
+        assertEquals(this.slotHandler.getNextVacantSlot(), expected);
     }
 
     @Test
     public void testParkTooManyCars() {
         for (int i = ZER0TH_INDEX; i < MAX_CAPACITY; i++) {
-            this.slotHandler.parkCar(new Car(i));
+            this.slotHandler.setSlotAsOccupied(i);
         }
         var exception = assertThrows(RuntimeException.class,
-                () -> this.slotHandler.parkCar(new Car(MAX_CAPACITY)));
+                () -> this.slotHandler.getNextVacantSlot());
         assertEquals("Can not park car, the parking lot is full", exception.getMessage());
     }
 
     @Test
     public void testWillParkInClosestSlot() {
-        this.slotHandler.setCarAtIndex(ZER0TH_INDEX, this.car1);
-        this.slotHandler.setCarAtIndex(FIRST_INDEX, this.car2);
-
         final int SECOND_INDEX = 2;
-        Car car3 = mock(Car.class);
-        this.slotHandler.parkCar(car3);
-
-        assertEquals(car3, this.slotHandler.getCarAtIndex(SECOND_INDEX));
+        Slot expected = this.slotHandler.getVacantSlotAtIndex(SECOND_INDEX);
+        this.slotHandler.setSlotAsOccupied(ZER0TH_INDEX);
+        this.slotHandler.setSlotAsOccupied(FIRST_INDEX);
+        assertEquals(this.slotHandler.getNextVacantSlot(), expected);
     }
 
     @Test
-    public void testOnUnParkCar() {
-        this.slotHandler.parkCar(this.car1);
-        Slot slot = this.slotHandler.getSlotAtIndex(ZER0TH_INDEX);
-        this.slotHandler.onUnParkCar(slot);
-        assertNull(this.slotHandler.getSlotAtIndex(ZER0TH_INDEX));
+    public void testUnParkingACarCreatesAVacantSlot() {
+        this.slotHandler.getNextVacantSlot();
+        Slot slot = this.slotHandler.getOccupiedSlotAtIndex(ZER0TH_INDEX);
+        this.slotHandler.setOnUnParkCar(slot);
+        assertNull(this.slotHandler.getOccupiedSlotAtIndex(ZER0TH_INDEX));
     }
 
     @Test
-    public void testExceptionThrownOnUnParkCar() {
+    public void testExceptionThrownIncorrectCarUnParking() {
         Slot slot = mock(Slot.class);
         var exception = assertThrows(RuntimeException.class,
-                () -> this.slotHandler.onUnParkCar(slot));
+                () -> this.slotHandler.setOnUnParkCar(slot));
         assertEquals("Error with onUnParkCar method call", exception.getMessage());
     }
 }

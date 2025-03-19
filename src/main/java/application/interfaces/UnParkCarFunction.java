@@ -1,6 +1,6 @@
 package application.interfaces;
 
 @FunctionalInterface
-public interface UnParkCarFunctionInterface {
+public interface UnParkCarFunction {
     void execute();
 }

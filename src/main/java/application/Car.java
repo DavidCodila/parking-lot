@@ -1,11 +1,11 @@
 package application;
 
-import application.interfaces.UnParkCarFunctionInterface;
+import application.interfaces.UnParkCarFunction;
 
 public class Car {
     private final int id;
     private int slotNumber;
-    private UnParkCarFunctionInterface unParkCarFunction;
+    private UnParkCarFunction unParkCarFunction;
 
     public Car(int id) {
         this.id = id;
@@ -25,7 +25,7 @@ public class Car {
         this.unParkCarFunction = null;
     }
 
-    public void setUnParkCarFunction(UnParkCarFunctionInterface unParkCarFunction) {
+    public void setUnParkCarFunction(UnParkCarFunction unParkCarFunction) {
         this.unParkCarFunction = unParkCarFunction;
     }
 }

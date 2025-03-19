@@ -9,21 +9,21 @@ import java.util.Map;
 public class ParkingLot {
     private final int MAX_CAPACITY;
     private final Map<Integer, Car> carRecord = new HashMap<>();
-    private final SlotHandler slotRecord;
+    private final SlotHandler slotHandler;
 
-    public ParkingLot(int maxCapacity, SlotHandler slotRecord) {
+    public ParkingLot(int maxCapacity, SlotHandler slotHandler) {
         this.MAX_CAPACITY = maxCapacity;
-        this.slotRecord = slotRecord;
+        this.slotHandler = slotHandler;
     }
 
     public void parkCar(int id) {
-        if (this.carRecord.size() < this.MAX_CAPACITY) {
-            Car car = new Car(id);
-            this.slotRecord.parkCar(car);
-            this.carRecord.put(id, car);
-        } else {
+        if (this.carRecord.size() >= this.MAX_CAPACITY) {
             throw new RuntimeException("Can not park car, parking lot is full");
         }
+        Car car = new Car(id);
+        this.carRecord.put(id, car);
+        Slot slot = this.slotHandler.getNextVacantSlot();
+        slot.parkCar(car);
     }
 
     public void findCar(int id) {

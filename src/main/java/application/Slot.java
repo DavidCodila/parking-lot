@@ -1,39 +1,42 @@
 package application;
 
-import application.interfaces.UnParkFromSlotFunctionInterface;
+import application.interfaces.UnParkSlotFunction;
 import com.google.common.annotations.VisibleForTesting;
 
 public class Slot {
     private final int number;
-    private Car car = null;
-    private UnParkFromSlotFunctionInterface unParkFromSlotFunction;
+    private Boolean taken;
+    private UnParkSlotFunction unParkSlotFunction;
 
     public Slot(int number) {
         this.number = number;
+        this.taken = false;
     }
 
-    public void setUnParkFromSlotFunction(UnParkFromSlotFunctionInterface unParkFromSlotFunction) {
-        this.unParkFromSlotFunction = unParkFromSlotFunction;
+    public void setUnParkSlotFunction(UnParkSlotFunction unParkSlotFunction) {
+        this.unParkSlotFunction = unParkSlotFunction;
     }
 
     public void parkCar(Car car) {
-        if (this.car == null) {
-            this.car = car;
-            this.car.parkInSlot(this.number);
-            this.car.setUnParkCarFunction(this::unParkCar);
-        } else {
+        if (this.taken) {
             throw new RuntimeException("Can not park car in slot number: " + this.number);
         }
+        this.taken = true;
+        car.parkInSlot(this.number);
+        car.setUnParkCarFunction(this::unParkCar);
     }
 
-    public void unParkCar() {
-        this.car = null;
-        this.unParkFromSlotFunction.execute(this);
+    private void unParkCar() {
+        if (!this.taken) {
+            throw new RuntimeException("There is no car in slot: " + this.number + " to un park.");
+        }
+        this.taken = false;
+        this.unParkSlotFunction.execute(this);
         System.out.printf("Slot %d is free\n", this.number);
     }
 
     @VisibleForTesting
-    Car getCar() {
-        return this.car;
+    void evokeUnParkCar() {
+        this.unParkCar();
     }
 }

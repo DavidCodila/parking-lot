@@ -1,12 +1,11 @@
 package application;
 
-import application.interfaces.UnParkCarFunctionInterface;
+import application.interfaces.UnParkCarFunction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.*;
 
 public class CarTest {
@@ -34,7 +33,7 @@ public class CarTest {
 
     @Test
     public void testUnPark() {
-        UnParkCarFunctionInterface function = mock(UnParkCarFunctionInterface.class);
+        UnParkCarFunction function = mock(UnParkCarFunction.class);
         doNothing().when(function).execute();
 
         this.car.setUnParkCarFunction(function);

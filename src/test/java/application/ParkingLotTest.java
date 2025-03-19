@@ -20,6 +20,7 @@ public class ParkingLotTest {
     private static final int CAR_NOT_PRESENT_ID = -1;
     
     private ParkingLot parkingLot;
+    @Mock Slot slot;
     @Mock private SlotHandler slotRecord;
     @Mock private Car car;
     @Mock private Car car2;
@@ -32,15 +33,15 @@ public class ParkingLotTest {
 
     @Test
     public void testParkCar() {
-        doNothing().when(this.slotRecord).parkCar(any(Car.class));
+        when(this.slotRecord.getNextVacantSlot()).thenReturn(this.slot);
         this.parkingLot.parkCar(CAR_1_ID);
-        verify(this.slotRecord, times(1)).parkCar(any(Car.class));
+        verify(this.slot, times(1)).parkCar(any(Car.class));
         assertNotNull(this.parkingLot.getCarFromCarRecordById(CAR_1_ID));
     }
 
     @Test
     public void testParkTooManyCars() {
-        doNothing().when(this.slotRecord).parkCar(any(Car.class));
+        when(this.slotRecord.getNextVacantSlot()).thenReturn(this.slot);
         for (int i = 0; i < MAX_CAPACITY; i++) {
             this.parkingLot.parkCar(i);
         }
