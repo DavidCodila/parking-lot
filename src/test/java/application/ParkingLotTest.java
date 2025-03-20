@@ -8,7 +8,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -70,12 +69,6 @@ public class ParkingLotTest {
         this.parkingLot.listCars(List.of(CAR_1_ID, CAR_2_ID));
         verify(this.car, times(1)).printInformation();
         verify(this.car2, times(1)).printInformation();
-    }
-
-    @Test
-    public void testListCarsWithNoCarsInParkingLot() throws Exception {
-        String methodOutput = tapSystemOut(() -> this.parkingLot.listCars(List.of(CAR_1_ID))).trim();
-        assertEquals("No cars in the Parking Lot", methodOutput);
     }
 
     @Test

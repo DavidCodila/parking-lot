@@ -26,15 +26,14 @@ public class SlotHandler {
         Optional<Entry<Integer, Slot>> closestSlotEntry = this.vacantSlotRegister.entrySet()
                 .stream()
                 .min(Entry.comparingByKey());
-        if (closestSlotEntry.isPresent()) {
-            Slot slot = closestSlotEntry.get().getValue();
-            Integer key = closestSlotEntry.get().getKey();
-            this.occupiedSlotRegister.put(key, slot);
-            this.vacantSlotRegister.remove(key);
-            return slot;
-        } else {
-            throw new RuntimeException("Can not park car, the parking lot is full");
+        if (closestSlotEntry.isEmpty()) {
+            throw new RuntimeException("Can not park car, the vacantSlotRegister is empty");
         }
+        Slot slot = closestSlotEntry.get().getValue();
+        Integer key = closestSlotEntry.get().getKey();
+        this.occupiedSlotRegister.put(key, slot);
+        this.vacantSlotRegister.remove(key);
+        return slot;
     }
 
     private void onUnParkCar(Slot slot) {

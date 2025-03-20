@@ -50,7 +50,7 @@ public class SlotHandlerTest {
         }
         var exception = assertThrows(RuntimeException.class,
                 () -> this.slotHandler.getNextVacantSlot());
-        assertEquals("Can not park car, the parking lot is full", exception.getMessage());
+        assertEquals("Can not park car, the vacantSlotRegister is empty", exception.getMessage());
     }
 
     @Test

@@ -7,15 +7,15 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-public class ListCarCommandGeneratorTest {
+public class ListCarCommandTest {
     private static final List<Integer> IDS = List.of(1, 2, 3);
 
     @Test
     public void testExecute() {
         ListCarCommand listCarCommand = new ListCarCommand(IDS);
         ParkingLot parkingLot = mock(ParkingLot.class);
-        doNothing().when(parkingLot).listCars(any());
+        doNothing().when(parkingLot).listCars(IDS);
         listCarCommand.execute(parkingLot);
-        verify(parkingLot, times(1)).listCars(any());
+        verify(parkingLot, times(1)).listCars(IDS);
     }
 }

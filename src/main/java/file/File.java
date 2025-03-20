@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
-//responsible for representing a file
 public class File {
     private final Path path;
 

@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.mockito.Mockito.*;
 
-public class CommandGeneratorRemoteTest {
+public class CommandRemoteTest {
     @Test
     public void testExecuteCommands() {
         ParkingLot parkingLot = mock(ParkingLot.class);

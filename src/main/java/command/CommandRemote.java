@@ -12,10 +12,6 @@ public class CommandRemote {
     }
 
     public void executeCommands(List<CommandInterface> commands) {
-        commands.forEach(this::execute);
-    }
-
-    private void execute(CommandInterface command) {
-        command.execute(this.parkingLot);
+        commands.forEach(command -> command.execute(this.parkingLot));
     }
 }

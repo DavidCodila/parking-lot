@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;
 
-public class ParkCarCommandGeneratorTest {
+public class ParkCarCommandTest {
     private static final int ID = 0;
 
     @Test

@@ -28,22 +28,20 @@ public class ParkingLot {
 
     public void findCar(int id) {
         this.validateCarRecordContainsKey(id);
-        this.carRecord.get(id).printInformation();
+        Car car = this.carRecord.get(id);
+        car.printInformation();
     }
 
     public void listCars(List<Integer> ids) {
-        if (this.carRecord.isEmpty()) {
-            System.out.println("No cars in the Parking Lot");
-        } else {
-            for(Integer id : ids) {
-                this.findCar(id);
-            }
+        for(Integer id : ids) {
+            this.findCar(id);
         }
     }
 
     public void unParkCar(int id) {
         this.validateCarRecordContainsKey(id);
-        this.carRecord.get(id).unPark();
+        Car car = this.carRecord.get(id);
+        car.unPark();
         this.carRecord.remove(id);
     }
 
