@@ -1,6 +1,4 @@
-import application.BasicSlotRecordGenerator;
 import application.ParkingLot;
-import application.SlotHandler;
 import command.*;
 
 import java.io.FileNotFoundException;
@@ -32,10 +30,7 @@ public class Main {
                 .map(Main::generateCommand)
                 .toList();
 
-        ParkingLot parkingLot = new ParkingLot(
-                MAX_CAPACITY,
-                new SlotHandler(new BasicSlotRecordGenerator(MAX_CAPACITY))
-        );
+        ParkingLot parkingLot = new ParkingLot(MAX_CAPACITY);
 
         commands.forEach(command -> command.execute(parkingLot));
     }
