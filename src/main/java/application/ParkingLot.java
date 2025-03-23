@@ -9,24 +9,23 @@ import java.util.Map;
 
 public class ParkingLot {
     private final Map<Integer, Integer> carIDToSlotNumberMap = new HashMap<>();
-    private final List<Integer> slotNumbers;
+    private final List<Integer> availableSlotNumbers;
 
     public ParkingLot(int maxCapacity) {
-        this.slotNumbers = new ArrayList<>(maxCapacity);
+        this.availableSlotNumbers = new ArrayList<>(maxCapacity);
         for (int i = 0; i < maxCapacity; i++) {
-            this.slotNumbers.add(i);
+            this.availableSlotNumbers.add(i);
         }
     }
 
     public void parkCar(int id) {
-        int slotNumber = this.slotNumbers.stream()
+        int slotNumber = this.availableSlotNumbers.stream()
                 .min(Integer::compareTo)
                 .orElseThrow(() ->
                         new RuntimeException("Can not park car, parking lot is full")
                 );
         System.out.printf("SLOT %d is allocated to %d\n", slotNumber, id);
-
-        this.slotNumbers.removeIf(value -> value.equals(slotNumber));
+        this.availableSlotNumbers.removeIf(value -> value.equals(slotNumber));
         this.carIDToSlotNumberMap.put(id, slotNumber);
     }
 
@@ -36,15 +35,13 @@ public class ParkingLot {
     }
 
     public void listCars(List<Integer> ids) {
-        for(Integer id : ids) {
-            this.findCar(id);
-        }
+        ids.forEach(this::findCar);
     }
 
     public void unParkCar(int id) {
         this.validateCarIsInParkingLot(id);
         int slotNumber = this.carIDToSlotNumberMap.get(id);
-        this.slotNumbers.add(slotNumber);
+        this.availableSlotNumbers.add(slotNumber);
         System.out.printf("Slot %d is free\n", slotNumber);
         this.carIDToSlotNumberMap.remove(id);
     }
@@ -61,8 +58,8 @@ public class ParkingLot {
     }
 
     @VisibleForTesting
-    List<Integer> getSlotNumbers() {
-        return slotNumbers;
+    void setCarIDToSlotNumber(int carId, int slotNumber) {
+        this.availableSlotNumbers.removeIf(value -> value.equals(slotNumber));
+        this.carIDToSlotNumberMap.put(carId, slotNumber);
     }
-
 }
