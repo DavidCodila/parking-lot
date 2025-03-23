@@ -1,20 +1,23 @@
 package command;
 
 import application.ParkingLot;
+import command.interfaces.CommandInterface;
 
-import java.util.ArrayList;
+import java.security.InvalidParameterException;
 import java.util.List;
 
 public class ListCarCommand implements CommandInterface {
     private final List<Integer> ids;
 
     public ListCarCommand(List<String> parameterLineSplit) {
-        List<Integer> parameters = new ArrayList<>();
-        for (String parameter : parameterLineSplit) {
-            this.validateIsInteger(parameter);
-            parameters.add(Integer.parseInt(parameter));
+        List<Integer> validParameters = parameterLineSplit.stream()
+                .filter(this::isInteger)
+                .map(Integer::valueOf)
+                .toList();
+        if (validParameters.isEmpty()) {
+            throw new InvalidParameterException("Parameter " + parameterLineSplit + " is not valid");
         }
-        this.ids = parameters;
+        this.ids = validParameters;
     }
 
     @Override

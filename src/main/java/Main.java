@@ -1,5 +1,6 @@
 import application.ParkingLot;
 import command.*;
+import command.interfaces.CommandInterface;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,14 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Main {
-    private static final String PARK_CAR = "PARK_CAR";
-    private static final String FIND = "FIND";
-    private static final String UN_PARK_CAR = "UN_PARK_CAR";
-    private static final String LIST = "LIST";
-
-
     public static void main(String[] args) throws IOException {
         final int MAX_CAPACITY = 5;
+        ParkingLot parkingLot = new ParkingLot(MAX_CAPACITY);
+
         List<String> commandLines;
         final String PATH_TO_COMMAND_FILE = "./src/main/resources/commands";
         try {
@@ -29,17 +26,20 @@ public class Main {
         List<CommandInterface> commands = commandLines.stream()
                 .map(Main::generateCommand)
                 .toList();
-
-        ParkingLot parkingLot = new ParkingLot(MAX_CAPACITY);
-
         commands.forEach(command -> command.execute(parkingLot));
     }
 
     private static CommandInterface generateCommand(String commandLine) {
+        final String PARK_CAR = "PARK_CAR";
+        final String FIND = "FIND";
+        final String UN_PARK_CAR = "UN_PARK_CAR";
+        final String LIST = "LIST";
+
         final String DELIMITER = " ";
-        List<String> split = Arrays.stream(commandLine.split(DELIMITER)).toList();
-        String command = split.getFirst();
         final int PARAMETER_INDEX = 1;
+
+        List<String> split = Arrays.asList(commandLine.split(DELIMITER));
+        String command = split.getFirst();
         List<String> parameterLineSplit = split.subList(PARAMETER_INDEX, split.size());
 
         return switch (command) {

@@ -3,6 +3,7 @@ package command;
 import application.ParkingLot;
 import org.junit.jupiter.api.Test;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,7 +21,7 @@ public class ListCarCommandTest {
         this.listCarCommand = new ListCarCommand(IDS);
         ParkingLot parkingLot = mock(ParkingLot.class);
         doNothing().when(parkingLot).listCars(integerIDS);
-        listCarCommand.execute(parkingLot);
+        this.listCarCommand.execute(parkingLot);
         verify(parkingLot, times(1)).listCars(integerIDS);
     }
 
@@ -28,9 +29,9 @@ public class ListCarCommandTest {
     public void testThrowsExceptionForInvalidCommand() {
         String invalidString = "Invalid";
         final List<String> INVALID_COMMAND_STRING = List.of(invalidString);
-        var exception = assertThrows(RuntimeException.class, () ->
+        var exception = assertThrows(InvalidParameterException.class, () ->
                 this.listCarCommand = new ListCarCommand(INVALID_COMMAND_STRING)
         );
-        assertEquals("Parameter " + invalidString + " is not valid", exception.getMessage());
+        assertEquals("Parameter " + INVALID_COMMAND_STRING + " is not valid", exception.getMessage());
     }
 }

@@ -3,14 +3,12 @@ package application;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ParkingLotTest {
@@ -89,16 +87,4 @@ public class ParkingLotTest {
         var exception = assertThrows(RuntimeException.class, () -> this.parkingLot.unParkCar(CAR_NOT_PRESENT_ID));
         assertEquals("Car with id: " + CAR_NOT_PRESENT_ID + " could not be found", exception.getMessage());
     }
-
-    @Test
-    public void testParkInSlot() throws Exception {
-
-    }
-
-//    @Test
-//    public void testPrintInformation() throws Exception {
-//        this.car.parkInSlot(this.slotId);
-//        String methodOutput = tapSystemOut(() -> this.car.printInformation()).trim();
-//        assertEquals(this.carId + " is parked at Slot number " + this.slotId, methodOutput);
-//    }
 }

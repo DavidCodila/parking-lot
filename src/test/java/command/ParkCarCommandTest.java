@@ -19,7 +19,7 @@ public class ParkCarCommandTest {
         this.parkCarCommand = new ParkCarCommand(ID);
         ParkingLot parkingLot = mock(ParkingLot.class);
         doNothing().when(parkingLot).parkCar(integerID);
-        parkCarCommand.execute(parkingLot);
+        this.parkCarCommand.execute(parkingLot);
         verify(parkingLot, times(1)).parkCar(integerID);
     }
 
@@ -29,6 +29,6 @@ public class ParkCarCommandTest {
         var exception = assertThrows(RuntimeException.class, () ->
                 this.parkCarCommand = new ParkCarCommand(INVALID_COMMAND_STRING)
         );
-        assertEquals("Can not make ParkCar Command from: " + INVALID_COMMAND_STRING, exception.getMessage());
+        assertEquals("Can not make Command from: " + INVALID_COMMAND_STRING, exception.getMessage());
     }
 }

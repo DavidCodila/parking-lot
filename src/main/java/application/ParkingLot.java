@@ -54,7 +54,7 @@ public class ParkingLot {
 
     @VisibleForTesting
     Integer getCarIDToSlotNumberMap(int id) {
-        return carIDToSlotNumberMap.get(id);
+        return this.carIDToSlotNumberMap.get(id);
     }
 
     @VisibleForTesting

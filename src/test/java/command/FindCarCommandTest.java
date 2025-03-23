@@ -1,7 +1,6 @@
 package command;
 
 import application.ParkingLot;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public class FindCarCommandTest {
         this.findCarCommand = new FindCarCommand(ID);
         ParkingLot parkingLot = mock(ParkingLot.class);
         doNothing().when(parkingLot).findCar(integerID);
-        findCarCommand.execute(parkingLot);
+        this.findCarCommand.execute(parkingLot);
         verify(parkingLot, times(1)).findCar(integerID);
     }
 
@@ -30,6 +29,16 @@ public class FindCarCommandTest {
         var exception = assertThrows(RuntimeException.class, () ->
                         this.findCarCommand = new FindCarCommand(INVALID_COMMAND_STRING)
         );
-        assertEquals("Can not make Find Command from: " + INVALID_COMMAND_STRING, exception.getMessage());
+        assertEquals("Can not make Command from: " + INVALID_COMMAND_STRING, exception.getMessage());
+    }
+
+    @Test
+    public void testThrowsExceptionForInvalidParameter() {
+        final String INVALID_PARAMETER = "Invalid";
+        final List<String> INVALID_PARAMETER_STRING = List.of(INVALID_PARAMETER);
+        var exception = assertThrows(RuntimeException.class, () ->
+                        this.findCarCommand = new FindCarCommand(INVALID_PARAMETER_STRING)
+        );
+        assertEquals( INVALID_PARAMETER + " is not a valid parameter", exception.getMessage());
     }
 }
