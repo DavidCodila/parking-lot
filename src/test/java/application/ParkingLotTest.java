@@ -2,8 +2,6 @@ package application;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.security.InvalidParameterException;
 import java.util.List;
@@ -11,7 +9,6 @@ import java.util.List;
 import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
 public class ParkingLotTest {
     private static final int MAX_CAPACITY = 5;
     private static final int CAR_1_ID = 0;
