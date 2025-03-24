@@ -2,6 +2,7 @@ package application;
 
 import com.google.common.annotations.VisibleForTesting;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +49,7 @@ public class ParkingLot {
 
     private void validateCarIsInParkingLot(int id) {
         if (!this.carIDToSlotNumberMap.containsKey(id)) {
-            throw new RuntimeException("Car with id: " + id + " could not be found");
+            throw new InvalidParameterException("Car with id: " + id + " could not be found");
         }
     }
 

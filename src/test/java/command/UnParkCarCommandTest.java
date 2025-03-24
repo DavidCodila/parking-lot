@@ -3,6 +3,7 @@ package command;
 import application.ParkingLot;
 import org.junit.jupiter.api.Test;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,9 +26,9 @@ public class UnParkCarCommandTest {
     @Test
     public void testThrowsExceptionForInvalidCommand() {
         final List<String> INVALID_COMMAND_STRING = List.of("Find", "Invalid", "Invalid");
-        var exception = assertThrows(RuntimeException.class, () ->
+        var exception = assertThrows(InvalidParameterException.class, () ->
                 this.unParkCarCommand = new UnParkCarCommand(INVALID_COMMAND_STRING)
         );
-        assertEquals("Can not make Command from: " + INVALID_COMMAND_STRING, exception.getMessage());
+        assertEquals( "Parameter " + INVALID_COMMAND_STRING + " is not valid", exception.getMessage());
     }
 }

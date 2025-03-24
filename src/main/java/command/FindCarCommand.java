@@ -9,8 +9,7 @@ public class FindCarCommand implements SingleParameterCommandInterface {
     private final int id;
 
     public FindCarCommand(List<String> parameterLineSplit) {
-        this.validateIsSingleParameterCommand(parameterLineSplit);
-        this.id = Integer.parseInt(parameterLineSplit.getFirst());
+        this.id = this.extractValidSingleParameter(parameterLineSplit);
     }
 
     @Override

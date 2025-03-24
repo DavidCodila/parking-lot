@@ -3,6 +3,7 @@ package command;
 import application.ParkingLot;
 import org.junit.jupiter.api.Test;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,19 +27,28 @@ public class FindCarCommandTest {
     @Test
     public void testThrowsExceptionForInvalidCommand() {
         final List<String> INVALID_COMMAND_STRING = List.of("Find", "Invalid", "Invalid");
-        var exception = assertThrows(RuntimeException.class, () ->
+        var exception = assertThrows(InvalidParameterException.class, () ->
                         this.findCarCommand = new FindCarCommand(INVALID_COMMAND_STRING)
         );
-        assertEquals("Can not make Command from: " + INVALID_COMMAND_STRING, exception.getMessage());
+        assertEquals( "Parameter " + INVALID_COMMAND_STRING + " is not valid", exception.getMessage());
     }
 
     @Test
     public void testThrowsExceptionForInvalidParameter() {
         final String INVALID_PARAMETER = "Invalid";
         final List<String> INVALID_PARAMETER_STRING = List.of(INVALID_PARAMETER);
-        var exception = assertThrows(RuntimeException.class, () ->
+        var exception = assertThrows(InvalidParameterException.class, () ->
                         this.findCarCommand = new FindCarCommand(INVALID_PARAMETER_STRING)
         );
-        assertEquals( INVALID_PARAMETER + " is not a valid parameter", exception.getMessage());
+        assertEquals( "Parameter " + INVALID_PARAMETER_STRING + " is not valid", exception.getMessage());
+    }
+
+    @Test
+    public void testThrowsExceptionForInvalidNumberOfParameters() {
+        final List<String> INVALID_PARAMETER_STRING = List.of("0", "1");
+        var exception = assertThrows(InvalidParameterException.class, () ->
+                        this.findCarCommand = new FindCarCommand(INVALID_PARAMETER_STRING)
+        );
+        assertEquals( "Can not make Command from: " + INVALID_PARAMETER_STRING, exception.getMessage());
     }
 }

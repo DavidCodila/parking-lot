@@ -9,8 +9,7 @@ public class ParkCarCommand implements SingleParameterCommandInterface {
     private final int id;
 
     public ParkCarCommand(List<String> parameterLineSplit) {
-        this.validateIsSingleParameterCommand(parameterLineSplit);
-        this.id = Integer.parseInt(parameterLineSplit.getFirst());
+        this.id = this.extractValidSingleParameter(parameterLineSplit);
     }
 
     @Override

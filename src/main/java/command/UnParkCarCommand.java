@@ -9,8 +9,7 @@ public class UnParkCarCommand implements SingleParameterCommandInterface {
     private final int id;
 
     public UnParkCarCommand(List<String> parameterLineSplit) {
-        this.validateIsSingleParameterCommand(parameterLineSplit);
-        this.id = Integer.parseInt(parameterLineSplit.getFirst());
+        this.id = this.extractValidSingleParameter(parameterLineSplit);
     }
 
     @Override

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.security.InvalidParameterException;
 import java.util.List;
 
 import static com.github.stefanbirkner.systemlambda.SystemLambda.tapSystemOut;
@@ -52,7 +53,9 @@ public class ParkingLotTest {
 
     @Test
     public void testCanNotFindCar() {
-        var exception = assertThrows(RuntimeException.class, () -> this.parkingLot.findCar(CAR_NOT_PRESENT_ID));
+        var exception = assertThrows(InvalidParameterException.class,
+                () -> this.parkingLot.findCar(CAR_NOT_PRESENT_ID)
+        );
         assertEquals("Car with id: " + CAR_NOT_PRESENT_ID + " could not be found", exception.getMessage());
     }
 
@@ -70,7 +73,9 @@ public class ParkingLotTest {
 
     @Test
     public void testListCarsWithWrongCarId() {
-        var exception = assertThrows(RuntimeException.class, () -> this.parkingLot.listCars(List.of(CAR_NOT_PRESENT_ID)));
+        var exception = assertThrows(InvalidParameterException.class,
+                () -> this.parkingLot.listCars(List.of(CAR_NOT_PRESENT_ID))
+        );
         assertEquals("Car with id: " + CAR_NOT_PRESENT_ID + " could not be found", exception.getMessage());
     }
 
@@ -84,7 +89,9 @@ public class ParkingLotTest {
 
     @Test
     public void TestUnParkACarThatIsNotInTheParkingLot() {
-        var exception = assertThrows(RuntimeException.class, () -> this.parkingLot.unParkCar(CAR_NOT_PRESENT_ID));
+        var exception = assertThrows(InvalidParameterException.class,
+                () -> this.parkingLot.unParkCar(CAR_NOT_PRESENT_ID)
+        );
         assertEquals("Car with id: " + CAR_NOT_PRESENT_ID + " could not be found", exception.getMessage());
     }
 }
