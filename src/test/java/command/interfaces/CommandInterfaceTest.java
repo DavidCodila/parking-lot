@@ -26,6 +26,15 @@ public class CommandInterfaceTest {
         var exception = assertThrows(InvalidParameterException.class, () ->
                 this.commandInterface.extractValidParameterList(INVALID_COMMAND_STRING)
         );
-        assertEquals( "Parameter " + INVALID_COMMAND_STRING + " is not valid", exception.getMessage());
+        assertEquals( "Parameters " + INVALID_COMMAND_STRING + " is not valid", exception.getMessage());
+    }
+
+    @Test
+    public void testExtractValidParameterListThrowsExceptionForAInvalidParameter() {
+        final List<String> INVALID_COMMAND_STRING = List.of("0", "Invalid", "1");
+        var exception = assertThrows(InvalidParameterException.class, () ->
+                this.commandInterface.extractValidParameterList(INVALID_COMMAND_STRING)
+        );
+        assertEquals( "Parameters " + INVALID_COMMAND_STRING + " is not valid", exception.getMessage());
     }
 }

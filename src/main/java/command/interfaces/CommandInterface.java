@@ -13,8 +13,8 @@ public interface CommandInterface {
                 .filter(parameter -> parameter.chars().allMatch(Character::isDigit))
                 .map(Integer::valueOf)
                 .toList();
-        if (validParameters.isEmpty()) {
-            throw new InvalidParameterException("Parameter " + parameterLineSplit + " is not valid");
+        if (validParameters.isEmpty() || validParameters.size() != parameterLineSplit.size()) {
+            throw new InvalidParameterException("Parameters " + parameterLineSplit + " is not valid");
         }
         return validParameters;
     }
