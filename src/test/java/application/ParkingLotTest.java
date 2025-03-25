@@ -28,7 +28,7 @@ public class ParkingLotTest {
     public void testParkCar() throws Exception {
         String methodOutput = tapSystemOut(() -> this.parkingLot.parkCar(CAR_0_ID)).trim();
         assertEquals("SLOT " + SLOT_0_ID + " is allocated to " + CAR_0_ID, methodOutput);
-        assertEquals(CAR_0_ID, this.parkingLot.retrieveSlotNumberToCarIdEntry(SLOT_0_ID).getValue());
+        assertEquals(CAR_0_ID, this.parkingLot.retrieveCarIdFromSlotNumber(SLOT_0_ID));
     }
 
     @Test
@@ -39,7 +39,7 @@ public class ParkingLotTest {
         this.parkingLot.setCarIDToSlotNumber(CAR_1_ID, SLOT_2_ID);
         String methodOutput = tapSystemOut(() -> this.parkingLot.parkCar(CAR_2_ID)).trim();
         assertEquals("SLOT " + SLOT_1_ID + " is allocated to " + CAR_2_ID, methodOutput);
-        assertEquals(CAR_2_ID, this.parkingLot.retrieveSlotNumberToCarIdEntry(SLOT_1_ID).getValue());
+        assertEquals(CAR_2_ID, this.parkingLot.retrieveCarIdFromSlotNumber(SLOT_1_ID));
     }
 
     @Test
@@ -92,7 +92,9 @@ public class ParkingLotTest {
         this.parkingLot.setCarIDToSlotNumber(CAR_0_ID, SLOT_0_ID);
         String methodOutput = tapSystemOut(() -> this.parkingLot.unParkCar(CAR_0_ID)).trim();
         assertEquals("Slot " + SLOT_0_ID + " is free", methodOutput);
-        assertNull(this.parkingLot.retrieveSlotNumberToCarIdEntry(SLOT_0_ID).getValue());
+        var exception = assertThrows(NullPointerException.class,
+                () -> this.parkingLot.retrieveCarIdFromSlotNumber(SLOT_0_ID));
+        assertEquals("Car with id: " + CAR_0_ID + " could not be found", exception.getMessage());
     }
 
     @Test

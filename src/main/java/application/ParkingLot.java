@@ -50,11 +50,12 @@ public class ParkingLot {
     }
 
     @VisibleForTesting
-    Map.Entry <Integer, Integer> retrieveSlotNumberToCarIdEntry(int carId) {
+    Integer retrieveCarIdFromSlotNumber(int carId) {
         return this.slotNumberToCarIdMap.entrySet().stream()
-                .filter(entry -> entry.getKey() == carId)
+                .filter(entry -> entry.getValue() != null && entry.getKey() == carId)
+                .map(Map.Entry::getValue)
                 .findFirst()
-                .orElseThrow( () -> new NullPointerException("Car with id: " + carId + " could not be found"));
+                .orElseThrow(() -> new NullPointerException("Car with id: " + carId + " could not be found"));
     }
 
     @VisibleForTesting
