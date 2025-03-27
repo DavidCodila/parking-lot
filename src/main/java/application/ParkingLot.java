@@ -1,65 +1,55 @@
 package application;
 
-import com.google.common.annotations.VisibleForTesting;
-
 import java.security.InvalidParameterException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.IntStream;
 
 public class ParkingLot {
-    private final Map<Integer, Integer> slotNumberToCarIdMap;
+    private final TreeSet<Integer> slots = new TreeSet<>(Integer::compareTo);
+    private final Map<Integer, Integer> carRecord = new HashMap<>();
 
     public ParkingLot(int maxCapacity) {
-        this.slotNumberToCarIdMap = new HashMap<>(maxCapacity);
-        for (int i = 0; i < maxCapacity; i++) {
-            this.slotNumberToCarIdMap.put(i, null);
-        }
+            this.slots.addAll(
+                    IntStream.range(0, maxCapacity)
+                            .boxed()
+                            .toList()
+            );
     }
 
-    public void parkCar(int carId) {
-        Integer slotNumber = this.slotNumberToCarIdMap.entrySet().stream()
-                .filter(entry -> entry.getValue() == null)
-                .min(Map.Entry.comparingByKey())
-                .map(Map.Entry::getKey)
-                .orElseThrow(() -> new RuntimeException("Can not park car, parking lot is full"));
-        this.slotNumberToCarIdMap.put(slotNumber, carId);
+    public void parkCar(Integer carId) {
+        Integer slotNumber = this.slots.stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Can not park car, parking lot is full\n"));
+        this.assignSlotNumberToCarId(carId, slotNumber);
         System.out.printf("SLOT %d is allocated to %d\n", slotNumber, carId);
     }
 
-    public void findCar(int carId) {
-        System.out.printf("%d is parked at Slot number %d\n", carId, this.getSlotNumberFromCarID(carId));
+    public void findCar(Integer carId) {
+        System.out.printf("%d is parked at SLOT number %d\n", carId, this.getSlotNumberFromCarId(carId));
     }
 
     public void listCars(List<Integer> carIds) {
         carIds.forEach(this::findCar);
     }
 
-    public void unParkCar(int carId) {
-        int slotNumber = this.getSlotNumberFromCarID(carId);
-        this.slotNumberToCarIdMap.put(slotNumber, null);
-        System.out.printf("Slot %d is free\n", slotNumber);
+    public void unParkCar(Integer carId) {
+        Integer slotNumber = this.getSlotNumberFromCarId(carId);
+        this.carRecord.remove(carId);
+        this.slots.add(slotNumber);
+        System.out.printf("SLOT %d is free\n", slotNumber);
     }
 
-    private int getSlotNumberFromCarID(int carId) {
-        return this.slotNumberToCarIdMap.entrySet().stream()
-                .filter(entry -> entry.getValue() != null && entry.getValue() == carId)
-                .map(Map.Entry::getKey)
-                .findFirst()
-                .orElseThrow(() -> new InvalidParameterException("Car with id: " + carId + " could not be found"));
+    //was extracted to method, because it was used by many tests
+    void assignSlotNumberToCarId(Integer carId, Integer slotNumber) {
+        this.carRecord.put(carId, slotNumber);
+        this.slots.removeIf(number -> number.equals(slotNumber));
     }
 
-    @VisibleForTesting
-    Integer retrieveCarIdFromSlotNumber(int carId) {
-        return this.slotNumberToCarIdMap.entrySet().stream()
-                .filter(entry -> entry.getValue() != null && entry.getKey() == carId)
-                .map(Map.Entry::getValue)
-                .findFirst()
-                .orElseThrow(() -> new NullPointerException("Car with id: " + carId + " could not be found"));
-    }
-
-    @VisibleForTesting
-    void setCarIDToSlotNumber(int carId, int slotNumber) {
-        this.slotNumberToCarIdMap.put(slotNumber, carId);
+    Integer getSlotNumberFromCarId(Integer carId) throws InvalidParameterException {
+        Integer slotNumber = this.carRecord.get(carId);
+        if (slotNumber == null) {
+            throw new InvalidParameterException("Car with id: " + carId + " could not be found");
+        }
+        return slotNumber;
     }
 }
